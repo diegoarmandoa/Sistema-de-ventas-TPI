@@ -54,7 +54,7 @@
                                                     <span class="input-group-text">Cant.</span>
                                                     <input type="number" class="form-control" value="1"
                                                            aria-label="Recipient's username"
-                                                           aria-describedby="button-addon2" min="1" name="cantidad"
+                                                           aria-describedby="button-addon2" name="cantidad"
                                                            id="cantidad">
                                                     <button type="submit" class="btn btn-outline-primary "
                                                             id="carrito" name="carrito">
@@ -62,7 +62,7 @@
                                                         <div th:each="carrito : ${carritos}">
 
                                                             <div th:if="${carrito.getIdproducto() == producto.id_Productos}">
-                                                               <!-- Agregado-->
+                                                               <b th:text="${carrito.getCantidad()}"/>
                                                             </div>
                                                         </div>
                                                     </button>

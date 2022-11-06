@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<!-- Modal -->
+
+<div class="modal fade" th:id="${'modalUsuario'}" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+     aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Ingrese sus datos de usuario</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form action="#"  method="post"  name="formModal">
+                    <div class="mb-3">
+                        <label for="usuario" class="col-form-label">
+                            Ingrese su usuario
+                        </label>
+                        <input type="text" class="form-control" placeholder="usuario"
+                               aria-label="Recipient's username"
+                               aria-describedby="button-addon2" name="usuario"
+                               id="usuario">
+
+                    </div>
+                    <div class="mb-3">
+                        <label for="password" class="col-form-label">
+                            ingrese su contraseña
+                        </label>
+                        <input type="password" class="form-control"
+                               aria-label="Recipient's username"
+                               aria-describedby="button-addon2" name="password"
+                               id="password" placeholder="contraseña">
+
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary">Enviar</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+
+
+
+
+
+
+</body>
+</html>

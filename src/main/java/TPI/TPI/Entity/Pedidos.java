@@ -20,7 +20,7 @@ public class Pedidos {
     private Date fecha;
 
     @Column(name = "estado")
-    private Boolean estado;
+    private String estado;
 
     @ManyToOne
     @JoinColumn(name = "id_producto")

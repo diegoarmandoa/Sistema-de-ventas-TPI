@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<!-- Modal -->
+
+<div class="modal fade" th:id="${'modalCliente'}" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+     aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Datos del Cliente</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form action="#"  method="post"  name="formModal">
+                    <div class="mb-3">
+                        <label for="nombre" class="col-form-label">
+                            Ingrese su nombre
+                        </label>
+                        <input type="text" class="form-control" placeholder="nombre"
+                               aria-label="Recipient's username"
+                               aria-describedby="button-addon2" name="nombre"
+                               id="nombre">
+
+                    </div>
+                    <div class="mb-3">
+                        <label for="apellido" class="col-form-label">
+                            Ingrese su apellido
+                        </label>
+                        <input type="text" class="form-control" placeholder="apellido"
+                               aria-label="Recipient's username"
+                               aria-describedby="button-addon2" name="apellido"
+                               id="apellido">
+
+                    </div>
+                    <div class="mb-3">
+                        <label for="direccion" class="col-form-label">
+                            Ingrese su direccion
+                        </label>
+                        <input type="text" class="form-control" placeholder="direccion"
+                               aria-label="Recipient's username"
+                               aria-describedby="button-addon2" name="direccio"
+                               id="direccion">
+
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="direccion" class="col-form-label">
+                            Ingrese su usuario
+                        </label>
+                        <input type="text" class="form-control" placeholder="usuario"
+                               aria-label="Recipient's username"
+                               aria-describedby="button-addon2" name="usuario"
+                               id="usuario">
+
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="password" class="col-form-label">
+                            Ingrese su contraseña
+                        </label>
+                        <input type="password" class="form-control" placeholder="contraseña"
+                               aria-label="Recipient's username"
+                               aria-describedby="button-addon2" name="password"
+                               id="password">
+
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary">Enviar</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+
+
+
+
+
+
+</body>
+</html>
