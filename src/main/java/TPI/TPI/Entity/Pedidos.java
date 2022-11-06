@@ -17,7 +17,7 @@ public class Pedidos {
     private Integer cantidad;
 
     @Column(name = "fecha")
-    private Date fecha;
+    private String fecha;
 
     @Column(name = "estado")
     private String estado;
