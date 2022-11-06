@@ -9,6 +9,8 @@ import java.util.List;
 public interface ProductosRepositorio extends JpaRepository<Productos, Integer>{
 @Query("select p from Productos p where p.estado = true")
 public List<Productos> findAll();
+    @Query("select p from Productos p where p.id_Productos = ?1")
+    public Productos buscar(Integer id);
 
 
 }

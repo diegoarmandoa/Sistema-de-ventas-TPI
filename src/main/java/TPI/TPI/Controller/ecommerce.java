@@ -1,10 +1,10 @@
 package TPI.TPI.Controller;
 
-import TPI.TPI.Entity.CarritoDao;
-import TPI.TPI.Entity.Pedidos;
-import TPI.TPI.Entity.Productos;
+import TPI.TPI.Entity.*;
+import TPI.TPI.Repository.ClienteRepositorio;
 import TPI.TPI.Repository.PedidosRepositorio;
 import TPI.TPI.Repository.ProductosRepositorio;
+import TPI.TPI.Repository.UsuarioRepositorio;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Controller;
@@ -14,6 +14,7 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import java.io.PipedOutputStream;
 import java.util.*;
 
 @Controller
@@ -24,6 +25,12 @@ public class ecommerce {
 
     @Autowired
     PedidosRepositorio pedidosRepositorio;
+
+    @Autowired
+    UsuarioRepositorio usuarioRepositorio;
+
+    @Autowired
+    ClienteRepositorio clienteRepositorio;
 
     List<CarritoDao> carritoDao = new ArrayList();
 
@@ -43,12 +50,17 @@ public class ecommerce {
         return "carrito";
     }
 
-    @GetMapping("/pedido")
-    public String pedido(@RequestParam Map<String, Object> params, Model model) {
-        List<Pedidos> pedidos = new ArrayList<>();
+    @PostMapping("/pedido")
+    public String pedido(@RequestParam Map<String, Object> params, Model model, Usuarios usuario, RedirectAttributes redirect) {
+        List<Pedidos> pedidos;
         try {
-            pedidos = pedidosRepositorio.findAll();
-        } catch (Exception e) {
+            Usuarios usuarios;
+
+            usuarios = usuarioRepositorio.buscarUsuario(usuario.getUsuario());
+            pedidos = pedidosRepositorio.pedidosEnProceso(usuarios.getId_persona().getId());        }
+        catch (Exception e) {
+            pedidos = pedidosRepositorio.pedidosEnProceso(0);
+            model.addAttribute("pedidos", pedidos);//enviando la lista
             return "pedidos";
         }
         model.addAttribute("pedidos", pedidos);//enviando la lista
@@ -59,15 +71,63 @@ public class ecommerce {
     @GetMapping("/ecommerce")
     public String ecommerce(@RequestParam Map<String, Object> params, Model model, Productos producto) {
         List<Productos> producto1 = new ArrayList<>();
-        try{
+        try {
             producto1 = repositorio.findAll();
-        }catch (Exception e) {
+        } catch (Exception e) {
             return "ecommerce";
         }
         List<CarritoDao> carro = carritoDao;
         model.addAttribute("productos", producto1);//enviando la lista
         model.addAttribute("carritos", carro);//enviando la lista
         return "ecommerce";
+    }
+
+    @PostMapping("/AgregarPedido")
+    public String agregraPedido(@RequestParam Map<String, Object> params, Model model, Usuarios usuario, RedirectAttributes redirect) {
+        Usuarios usuarios;
+        List<Pedidos> pedidos;
+        usuarios = usuarioRepositorio.buscarUsuario(usuario.getUsuario());
+        pedidos = pedidosRepositorio.pedidosEnProceso(usuarios.getId_persona().getId());
+
+        try {
+            usuarios = usuarioRepositorio.buscarUsuario(usuario.getUsuario());
+            if (usuarios.getPassword().equals(usuario.getPassword())) {
+
+                for (CarritoDao x : carritoDao) {
+                    Pedidos pedido = new Pedidos();
+                    Productos productos;
+                    productos = repositorio.buscar(x.getIdproducto());
+
+                    Clientes clientes;
+
+                    clientes = clienteRepositorio.buscarCliente(usuarios.getId_persona().getId());
+                    pedido.setEstado("Encargado");
+                    pedido.setId_producto(productos);
+                    pedido.setId_persona(clientes);
+                    pedido.setCantidad(x.getCantidad());
+                    pedidosRepositorio.save(pedido);
+
+                }
+                carritoDao.clear();
+                pedidos = pedidosRepositorio.pedidosEnProceso(usuarios.getId_persona().getId());
+                model.addAttribute("pedidos", pedidos);//enviando la lista
+
+                return "pedidos";
+            } else {
+                pedidos = pedidosRepositorio.pedidosEnProceso(usuarios.getId_persona().getId());
+                redirect.addFlashAttribute("usuario", "activo");
+
+                return "redirect:/agregados";
+            }
+        } catch (Exception e) {
+            pedidos = pedidosRepositorio.pedidosEnProceso(usuarios.getId_persona().getId());
+            redirect.addFlashAttribute("usuario", "activo");
+
+            return "redirect:/agregados";
+        }
+
+
+
     }
 
     @PostMapping("/{id}/carrito")

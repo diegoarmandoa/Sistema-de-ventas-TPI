@@ -141,6 +141,16 @@
             })
         }
     </script>
+    <div th:if="${usuario != null}">
+        <script>
+            Swal.fire({
+                icon: 'error',
+                title: 'Oops...',
+                text: 'Datos ingresados incorrectos!',
+
+            })
+        </script>
+    </div>
 </th:block>
 </body>
 </html>
