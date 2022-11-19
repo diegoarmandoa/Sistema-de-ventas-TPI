@@ -151,6 +151,16 @@
             })
         </script>
     </div>
+    <div th:if="${Error != null}">
+        <script>
+            Swal.fire({
+                icon: 'error',
+                title: 'Oops...',
+                text: 'Ingrese todo los datos!',
+
+            })
+        </script>
+    </div>
 </th:block>
 </body>
 </html>

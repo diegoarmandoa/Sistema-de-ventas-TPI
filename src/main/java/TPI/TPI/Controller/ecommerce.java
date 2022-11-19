@@ -38,8 +38,16 @@ public class ecommerce {
     List<CarritoDao> carritoDao = new ArrayList();
 
     @PostMapping("/agregarCliente")
-    public String guardarCliente(@RequestParam Map<String, Object> params, Model model, Usuarios usuario,  Clientes cliente, RedirectAttributes redirect) {
+    public String guardarCliente(@RequestParam Map<String, Object> params, Model model, Usuarios usuario, Clientes cliente, RedirectAttributes redirect) {
+        if (cliente.getDireccion().equals("") ||
+                cliente.getId_persona().getNombre().equals("") ||
+                cliente.getId_persona().getNombre().equals("") ||
+                usuario.getUsuario().equals("") ||
+                usuario.getPassword().equals("")) {
+            model.addAttribute("Error", "dato");
+            return "redirect:/agregados";
 
+        }
         Personas per = new Personas();
         per.setNombre(cliente.getId_persona().getNombre());
         per.setApellido(cliente.getId_persona().getApellido());
@@ -127,11 +135,11 @@ public class ecommerce {
     public String agregraPedido(@RequestParam Map<String, Object> params, Model model, Usuarios usuario, RedirectAttributes redirect) {
         Usuarios usuarios;
         List<Pedidos> pedidos;
-        usuarios = usuarioRepositorio.buscarUsuario(usuario.getUsuario());
-        pedidos = pedidosRepositorio.pedidosEnProceso(usuarios.getId_persona().getId());
+
 
         try {
             usuarios = usuarioRepositorio.buscarUsuario(usuario.getUsuario());
+            pedidos = pedidosRepositorio.pedidosEnProceso(usuarios.getId_persona().getId());
             if (usuarios.getPassword().equals(usuario.getPassword())) {
                 Date fecha = new Date();
                 for (CarritoDao x : carritoDao) {
@@ -156,13 +164,11 @@ public class ecommerce {
 
                 return "pedidos";
             } else {
-                pedidos = pedidosRepositorio.pedidosEnProceso(usuarios.getId_persona().getId());
                 redirect.addFlashAttribute("usuario", "activo");
 
                 return "redirect:/agregados";
             }
         } catch (Exception e) {
-            pedidos = pedidosRepositorio.pedidosEnProceso(usuarios.getId_persona().getId());
             redirect.addFlashAttribute("usuario", "activo");
 
             return "redirect:/agregados";
