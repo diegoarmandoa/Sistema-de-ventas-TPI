@@ -16,41 +16,42 @@
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-                <form action="#"  method="post"  name="formModal">
+                <form th:action="@{/agregarCliente}" method="Post" th:object="${cliente}" name="formModal">
                     <div class="mb-3">
-                        <label for="nombre" class="col-form-label">
-                            Ingrese su nombre
+                        <label for="id_persona.nombre" class="col-form-label">
+                            Ingrese su nombre:
                         </label>
                         <input type="text" class="form-control" placeholder="nombre"
                                aria-label="Recipient's username"
-                               aria-describedby="button-addon2" name="nombre"
-                               id="nombre">
+                               aria-describedby="button-addon2" name="id_persona.nombre"
+                               id="id_persona.nombre">
 
                     </div>
                     <div class="mb-3">
                         <label for="apellido" class="col-form-label">
-                            Ingrese su apellido
+                            Ingrese su apellido:
                         </label>
                         <input type="text" class="form-control" placeholder="apellido"
                                aria-label="Recipient's username"
-                               aria-describedby="button-addon2" name="apellido"
+                               aria-describedby="button-addon2" name="id_persona.apellido"
                                id="apellido">
 
                     </div>
                     <div class="mb-3">
                         <label for="direccion" class="col-form-label">
-                            Ingrese su direccion
+                            Ingrese su direccion:
                         </label>
                         <input type="text" class="form-control" placeholder="direccion"
                                aria-label="Recipient's username"
-                               aria-describedby="button-addon2" name="direccio"
+                               aria-describedby="button-addon2" name="direccion"
                                id="direccion">
+
 
                     </div>
 
                     <div class="mb-3">
-                        <label for="direccion" class="col-form-label">
-                            Ingrese su usuario
+                        <label for="usuario" class="col-form-label">
+                            Ingrese su usuario:
                         </label>
                         <input type="text" class="form-control" placeholder="usuario"
                                aria-label="Recipient's username"
@@ -61,7 +62,7 @@
 
                     <div class="mb-3">
                         <label for="password" class="col-form-label">
-                            Ingrese su contraseña
+                            Ingrese su contraseña:
                         </label>
                         <input type="password" class="form-control" placeholder="contraseña"
                                aria-label="Recipient's username"
@@ -69,23 +70,16 @@
                                id="password">
 
                     </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                        <input type="submit" class="btn btn-primary" value="Enviar"/>
+                    </div>
                 </form>
             </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                <button type="button" class="btn btn-primary">Enviar</button>
-            </div>
+
         </div>
     </div>
 </div>
-
-
-
-
-
-
-
-
 
 
 </body>
