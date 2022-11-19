@@ -2,6 +2,7 @@ package TPI.TPI.Controller;
 
 import TPI.TPI.Entity.*;
 import TPI.TPI.Repository.*;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Controller;
@@ -39,12 +40,27 @@ public class ecommerce {
 
     @PostMapping("/agregarCliente")
     public String guardarCliente(@RequestParam Map<String, Object> params, Model model, Usuarios usuario, Clientes cliente, RedirectAttributes redirect) {
+        try {
+
+
+            if(!usuarioRepositorio.buscarUsuarioPassword(usuario.getUsuario(), usuario.getPassword()).getId_Usuario().equals("")){
+                redirect.addFlashAttribute("Error", "Otro cliente contiene este usuario");
+               // model.addAttribute("UsuariosIgual", "Error");
+                return "redirect:/agregados";
+            }
+
+        }catch (Exception e){
+
+
+        }
         if (cliente.getDireccion().equals("") ||
                 cliente.getId_persona().getNombre().equals("") ||
                 cliente.getId_persona().getNombre().equals("") ||
                 usuario.getUsuario().equals("") ||
                 usuario.getPassword().equals("")) {
-            model.addAttribute("Error", "dato");
+            ObjectMapper objectMapper = new ObjectMapper();
+
+            redirect.addFlashAttribute("Error", "Ingrese todo los datos");
             return "redirect:/agregados";
 
         }
@@ -79,8 +95,6 @@ public class ecommerce {
         model.addAttribute("pedidos", pedidos);//enviando la lista
 
         return "pedidos";
-
-
     }
 
     @GetMapping("/agregados")
@@ -164,12 +178,12 @@ public class ecommerce {
 
                 return "pedidos";
             } else {
-                redirect.addFlashAttribute("usuario", "activo");
+                redirect.addFlashAttribute("Error", "Datos ingresados incorrectos");
 
                 return "redirect:/agregados";
             }
         } catch (Exception e) {
-            redirect.addFlashAttribute("usuario", "activo");
+            redirect.addFlashAttribute("Error", "Datos ingresados incorrectos");
 
             return "redirect:/agregados";
         }
