@@ -10,7 +10,6 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.validation.Valid;
@@ -91,6 +90,8 @@ public class ecommerce {
         List<Pedidos> pedidos;
         pedidos = pedidosRepositorio.pedidosEnProceso(usuario.getId_persona().getId());
         carritoDao.clear();
+        Double total = pedidosRepositorio.pedidosEnProcesoTotal(usuario.getId_persona().getId());
+        model.addAttribute("total", total);
         pedidos = pedidosRepositorio.pedidosEnProceso(usuario.getId_persona().getId());
         model.addAttribute("pedidos", pedidos);//enviando la lista
 
@@ -116,16 +117,24 @@ public class ecommerce {
     @PostMapping("/pedido")
     public String pedido(@RequestParam Map<String, Object> params, Model model, Usuarios usuario, RedirectAttributes redirect) {
         List<Pedidos> pedidos;
+        Usuarios usuarios;
+        Double total = 0.00;
         try {
-            Usuarios usuarios;
+
 
             usuarios = usuarioRepositorio.buscarUsuario(usuario.getUsuario());
+             total = pedidosRepositorio.pedidosEnProcesoTotal(usuarios.getId_persona().getId());
+
             pedidos = pedidosRepositorio.pedidosEnProceso(usuarios.getId_persona().getId());
         } catch (Exception e) {
             pedidos = pedidosRepositorio.pedidosEnProceso(0);
+            model.addAttribute("total", total);
+
             model.addAttribute("pedidos", pedidos);//enviando la lista
             return "pedidos";
         }
+        model.addAttribute("total", total);
+
         model.addAttribute("pedidos", pedidos);//enviando la lista
 
         return "pedidos";
@@ -173,6 +182,9 @@ public class ecommerce {
 
                 }
                 carritoDao.clear();
+                Double total = pedidosRepositorio.pedidosEnProcesoTotal(usuarios.getId_persona().getId());
+                model.addAttribute("total", total);
+
                 pedidos = pedidosRepositorio.pedidosEnProceso(usuarios.getId_persona().getId());
                 model.addAttribute("pedidos", pedidos);//enviando la lista
 
