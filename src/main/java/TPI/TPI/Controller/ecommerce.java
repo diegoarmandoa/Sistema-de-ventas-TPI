@@ -1,18 +1,18 @@
 package TPI.TPI.Controller;
 
 import TPI.TPI.Entity.*;
-import TPI.TPI.Repository.ClienteRepositorio;
-import TPI.TPI.Repository.PedidosRepositorio;
-import TPI.TPI.Repository.ProductosRepositorio;
-import TPI.TPI.Repository.UsuarioRepositorio;
+import TPI.TPI.Repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import javax.validation.Valid;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
@@ -32,7 +32,48 @@ public class ecommerce {
     @Autowired
     ClienteRepositorio clienteRepositorio;
 
+    @Autowired
+    PersonaRepositorio personaRepositorio;
+
     List<CarritoDao> carritoDao = new ArrayList();
+
+    @PostMapping("/agregarCliente")
+    public String guardarCliente(@RequestParam Map<String, Object> params, Model model, Usuarios usuario,  Clientes cliente, RedirectAttributes redirect) {
+
+        Personas per = new Personas();
+        per.setNombre(cliente.getId_persona().getNombre());
+        per.setApellido(cliente.getId_persona().getApellido());
+        per.setEstado(true);
+        personaRepositorio.save(per);
+        Personas per1 = personaRepositorio.findAll(Sort.by("id").descending()).get(0);
+        usuario.setId_persona(per1);
+        usuarioRepositorio.save(usuario);
+        cliente.setId_persona(per1);
+        cliente.setEstado(true);
+        clienteRepositorio.save(cliente);
+        Date fecha = new Date();
+        for (CarritoDao x : carritoDao) {
+            Pedidos pedido = new Pedidos();
+            Productos productos;
+            productos = repositorio.buscar(x.getIdproducto());
+            pedido.setEstado("Encargado");
+            pedido.setId_producto(productos);
+            pedido.setId_persona(cliente);
+            pedido.setCantidad(x.getCantidad());
+            pedido.setFecha(obtenerFechaYHoraActual());
+            pedidosRepositorio.save(pedido);
+
+        }
+        List<Pedidos> pedidos;
+        pedidos = pedidosRepositorio.pedidosEnProceso(usuario.getId_persona().getId());
+        carritoDao.clear();
+        pedidos = pedidosRepositorio.pedidosEnProceso(usuario.getId_persona().getId());
+        model.addAttribute("pedidos", pedidos);//enviando la lista
+
+        return "pedidos";
+
+
+    }
 
     @GetMapping("/agregados")
     public String agregados(@RequestParam Map<String, Object> params, Model model, Productos producto) {
@@ -57,8 +98,8 @@ public class ecommerce {
             Usuarios usuarios;
 
             usuarios = usuarioRepositorio.buscarUsuario(usuario.getUsuario());
-            pedidos = pedidosRepositorio.pedidosEnProceso(usuarios.getId_persona().getId());        }
-        catch (Exception e) {
+            pedidos = pedidosRepositorio.pedidosEnProceso(usuarios.getId_persona().getId());
+        } catch (Exception e) {
             pedidos = pedidosRepositorio.pedidosEnProceso(0);
             model.addAttribute("pedidos", pedidos);//enviando la lista
             return "pedidos";
@@ -126,7 +167,6 @@ public class ecommerce {
 
             return "redirect:/agregados";
         }
-
 
 
     }
