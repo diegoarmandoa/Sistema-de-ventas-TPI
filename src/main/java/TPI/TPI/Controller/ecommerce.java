@@ -159,7 +159,6 @@ public class ecommerce {
         Usuarios usuarios;
         List<Pedidos> pedidos;
 
-
         try {
             usuarios = usuarioRepositorio.buscarUsuario(usuario.getUsuario());
             pedidos = pedidosRepositorio.pedidosEnProceso(usuarios.getId_persona().getId());

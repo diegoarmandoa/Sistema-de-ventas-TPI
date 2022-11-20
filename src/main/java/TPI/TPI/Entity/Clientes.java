@@ -19,6 +19,11 @@ public class Clientes {
     @Column(name = "estado")
     private Boolean estado;
 
+    @Column(name = "latitud")
+    private double latitud;
+    @Column (name ="longitud")
+    private double longitud;
+
     @ManyToOne
     @JoinColumn(name = "id_persona")
     private Personas id_persona;
