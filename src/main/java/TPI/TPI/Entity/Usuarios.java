@@ -1,5 +1,6 @@
 package TPI.TPI.Entity;
 
+import TPI.TPI.Enumeraciones.Rol;
 import lombok.Data;
 
 import javax.persistence.*;
@@ -11,7 +12,7 @@ import javax.persistence.*;
 public class Usuarios {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer id_Usuario;
+    private Long id_Usuario;
 
     @Column
     private String usuario;
