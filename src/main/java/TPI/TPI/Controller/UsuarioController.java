@@ -8,16 +8,16 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 @Controller
-
+@RequestMapping("/dashboard/usuarios")
 public class UsuarioController {
 
     @Autowired
     UsuarioServiceAPI usuarioServiceAPI;
 
-    @GetMapping("/dashboard/usuarios/view")
+    @GetMapping("/view")
     public String viewUsers( Model model){
         model.addAttribute("listUsuarios",usuarioServiceAPI.getAll());
-        return "dashboard/tables.html";
+        return "dashboard/usuarios.html";
     }
 
     @GetMapping("/agregar")
@@ -30,6 +30,9 @@ public class UsuarioController {
         return "";
     }
 
-
+    @GetMapping("/login")
+    public String login (){
+        return "dashboard/login.html";
+    }
 
 }
