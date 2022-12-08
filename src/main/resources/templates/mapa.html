@@ -52,16 +52,21 @@
             <div class="col-md-12 p-3 mt-3">
                 <div align="center"><H1>Mapa</H1></div>
 
+                <form th:action="@{/AgregarMapa}" method="post" th:object="${cliente}">
+                    <input type="submit" class="btn btn-primary" value="Actualizar"/>
 
-                <div class="row">
-                    <!--para mapas -->
-                    <div class="mb-3">
-                        <div id="map" style=" height: 800px;width: 1000px; "></div>
-                        <input type="hidden" name="latitud" id="latitud">
-                        <input type="hidden" name="longitud" id="longitud">
+                    <div class="row">
+                        <!--para mapas -->
+                        <div class="mb-3">
+                            <div id="map" style=" height: 500px;width: 1100px; "></div>
+                            <input type="hidden" name="latitud" id="latitud">
+                            <input type="hidden" name="longitud" id="longitud">
+                        </div>
+                        <!--fin mapas-->
                     </div>
-                    <!--fin mapas-->
-                </div>
+
+                </form>
+
             </div>
 
         </div>
@@ -100,7 +105,7 @@
         }
     </script>
     <!--fin script mapa -->
-    </div>
+
 </th:block>
 </body>
 </html>
