@@ -151,6 +151,11 @@ public class ecommerce {
         model.addAttribute("carritos", carro);//enviando la lista
         return "ecommerce";
     }
+    @GetMapping("/mapa")
+    public String mapa() {
+
+        return "mapa";
+    }
 
     @PostMapping("/AgregarPedido")
     public String agregraPedido(@RequestParam Map<String, Object> params, Model model, Usuarios usuario, RedirectAttributes redirect) {
