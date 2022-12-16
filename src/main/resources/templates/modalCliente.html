@@ -1,10 +1,4 @@
-<!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
-<body>
+
 <!-- Modal -->
 
 <div class="modal fade" th:id="${'modalCliente'}" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
@@ -74,21 +68,12 @@
 
                         </div>
 
-                        <!--para mapas -->
-                        <div>
-                            <div id="map" style=" height: 400px;width: 600px; "></div>
-
-                            <input type="hidden" name="latitud" id="latitud">
-                            <input type="hidden" name="longitud" id="longitud">
-                        </div>
-                        <!--fin mapas-->
-
-
                         <div class="modal-footer">
                             <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close
                             </button>
                             <input type="submit" id="btnCliente" class="btn btn-primary" value="Enviar"/>
                         </div>
+
                     </form>
 
 
@@ -100,7 +85,3 @@
         </div>
     </div>
 </div>
-
-
-</body>
-</html>

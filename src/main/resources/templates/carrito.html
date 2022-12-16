@@ -115,7 +115,6 @@
                 </div>
 
             </div>
-           <!-- <div id="map" style=" height: 400px;width: 600px; "></div>-->
 
         </div>
     </div>
@@ -128,29 +127,11 @@
     <!-- script de mapa-->
     <script src="https://unpkg.com/leaflet@1.9.3/dist/leaflet.js"
             integrity="sha256-WBkoXOwTeyKclOHuWtc+i2uENFpDZ9YPdf5Hf+D7ewM=" crossorigin=""></script>
-    <script>
-        var map = L.map('map').fitWorld();
-        L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
-            maxZoom: 19,
-            attribution: '© OpenStreetMap'
-        }).addTo(map);
-        map.locate({setView: true, maxZoom: 10});
-        map.on('locationfound', onLocationFound);
-        map.on('locationerror', onLocationError);
-        function onLocationFound(e) {
-            var radius = e.accuracy;
-            L.marker(e.latlng).addTo(map)
-                .bindPopup("Tu estas a  " + radius + " metros del punto").openPopup();
 
-            L.circle(e.latlng, radius).addTo(map);
-            document.getElementById('latitud').value =  map.getBounds().getCenter().lat;
-            document.getElementById('longitud').value =  map.getBounds().getCenter().lng;
-        }
-        function onLocationError(e) {
-            alert(e.message);
-        }
-    </script>
-<!--fin script mapa -->
+    <!-- script de mapa-->
+    <script src="https://unpkg.com/leaflet@1.9.3/dist/leaflet.js"
+            integrity="sha256-WBkoXOwTeyKclOHuWtc+i2uENFpDZ9YPdf5Hf+D7ewM=" crossorigin=""></script>
+
     <script>
 
         function ValidarUbicacion(){

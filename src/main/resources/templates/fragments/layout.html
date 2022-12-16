@@ -1,17 +1,11 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
-
 <head >
-
-
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <meta name="description" content="">
     <meta name="author" content="">
-
-
-
     <!-- Custom fonts for this template-->
     <link th:href="@{/vendor/fontawesome-free/css/all.min.css}" rel="stylesheet" type="text/css">
     <link
@@ -25,17 +19,12 @@
 
     </th:block>
 
-
 </head>
-
 <body id="page-top">
-
     <!-- Page Wrapper -->
     <div id="wrapper">
-
         <!-- Sidebar -->
         <ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion" id="accordionSidebar">
-
             <!-- Sidebar - Brand -->
             <a class="sidebar-brand d-flex align-items-center justify-content-center" th:href="@{/dashboard/home}">
                 <div class="sidebar-brand-icon ">
@@ -43,7 +32,6 @@
                 </div>
                 <div class="sidebar-brand-text mx-3">Antojitos</sup></div>
             </a>
-
             <!-- Divider -->
             <hr class="sidebar-divider my-0">
 
@@ -53,18 +41,12 @@
                     <i class="fas fa-fw fa-tachometer-alt"></i>
                     <span>Dashboard</span></a>
             </li>
-
-
-
-
             <!-- Divider  productos-->
             <hr class="sidebar-divider">
-
             <!-- Heading -->
             <div class="sidebar-heading">
                 gestionar
             </div>
-
             <!-- Nav Item - Pages Collapse Menu -->
             <li class="nav-item">
                 <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseproductos"
@@ -74,13 +56,16 @@
                 </a>
                 <div id="collapseproductos" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
                     <div class="bg-white py-2 collapse-inner rounded">
+<<<<<<< HEAD
                        
                         <a class="collapse-item" th:href="@{/dashboard/productos/new}">Agregar productos</a>
+=======
+                        <a class="collapse-item" th:href="@{/dashboard/productos/}">Agregar productos</a>
+>>>>>>> 297e1dc7a2da984e79750c5cc7e602dd010bc090
                         <a class="collapse-item"th:href="@{/dashboard/productos/view}">Ver productos</a>
                     </div>
                 </div>
             </li>
-
             <li class="nav-item">
                 <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseUsuarios"
                     aria-expanded="true" aria-controls="collapseUsuarios">
@@ -89,27 +74,17 @@
                 </a>
                 <div id="collapseUsuarios" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
                     <div class="bg-white py-2 collapse-inner rounded">
-                       
                         <a class="collapse-item" th:href="@{/dashboard/usuarios/}">Agregar usuario</a>
                         <a class="collapse-item"th:href="@{/dashboard/usuarios/view}">Ver usuarios</a>
                     </div>
                 </div>
             </li>
-
-
-
-
-
-
-
             <!-- Divider -->
             <hr class="sidebar-divider">
-
             <!-- Heading -->
             <div class="sidebar-heading">
                 Interface
             </div>
-
             <!-- Nav Item - Pages Collapse Menu -->
             <li class="nav-item">
                 <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseTwo"
@@ -183,14 +158,12 @@
                     <i class="fas fa-fw fa-chart-area"></i>
                     <span>Charts</span></a>
             </li>
-
             <!-- Nav Item - Tables -->
             <li class="nav-item">
                 <a class="nav-link" href="tables.html">
                     <i class="fas fa-fw fa-table"></i>
                     <span>Tables</span></a>
             </li>
-
             <!-- Divider -->
             <hr class="sidebar-divider d-none d-md-block">
 
@@ -198,7 +171,6 @@
             <div class="text-center d-none d-md-inline">
                 <button class="rounded-circle border-0" id="sidebarToggle"></button>
             </div>
-
             <!-- Sidebar Message -->
             <!-- <div class="sidebar-card d-none d-lg-flex">
             <img class="sidebar-card-illustration mb-2" th:src="@{/img/undraw_rocket.svg}" alt="...">
@@ -206,7 +178,6 @@
                 more!</p>
             <a class="btn btn-success btn-sm" href="https://startbootstrap.com/theme/sb-admin-pro">Upgrade to Pro!</a>
         </div>-->
-
         </ul>
         <!-- End of Sidebar -->
 
@@ -382,7 +353,6 @@
                                 <a class="dropdown-item text-center small text-gray-500" href="#">Read More Messages</a>
                             </div>
                         </li>
-
                         <div class="topbar-divider d-none d-sm-block"></div>
 
                         <!-- Nav Item - User Information -->
@@ -426,31 +396,25 @@
           
 
                     <div layout:fragment="page-content">
-
-
                     </div>
 
                     <!-- Footer -->
                     <footer class="sticky-footer bg-white">
                         <div class="container my-auto">
                             <div class="copyright text-center my-auto">
-                                <span>Copyright &copy; Your Website 2021</span>
+                                <span>Copyright &copy;  FMP-UES TPI 2022</span>
                             </div>
                         </div>
                     </footer>
                     <!-- End of Footer -->
-
                 </div>
                 <!-- End of Content Wrapper -->
-
             </div>
             <!-- End of Page Wrapper -->
-
             <!-- Scroll to Top Button-->
             <a class="scroll-to-top rounded" href="#page-top">
                 <i class="fas fa-angle-up"></i>
             </a>
-
             <!-- Logout Modal-->
             <div class="modal fade" id="logoutModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
                 aria-hidden="true">
