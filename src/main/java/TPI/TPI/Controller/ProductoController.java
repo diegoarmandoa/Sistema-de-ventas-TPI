@@ -11,32 +11,42 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 @Controller
+@RequestMapping("/dashboard/productos")
 public class ProductoController {
     @Autowired
     private ProductoServiceAPI productoServiceAPI;
 
-    @RequestMapping("/")
+    //listo
+    @RequestMapping("/view")
     public String viewProductos(Model model){
-        model.addAttribute("list", productoServiceAPI.getAll());
-        return "productos";
+        model.addAttribute("productosList", productoServiceAPI.getAll());
+        return "dashboard/productos.html";
+    }
+    //listo
+    @RequestMapping("/new")
+    public String newProductos(){
+        return "dashboard/addProductos.html";
     }
 
     @GetMapping("/saveProductos/{id}")
-    public String showSave(@PathVariable("id") Long id, Model model){
+    public String showSave(@PathVariable("id") Integer id, Model model){
         if(id != null){
             model.addAttribute("producto", productoServiceAPI.get(id));
         }
-        return "saveProductos";
+        return "dashboard/editProductos.html";
     }
 
+    //listo
     @PostMapping("/saveProductos")
     public String save(Productos productos, Model model){
         productoServiceAPI.save(productos);
-        return "redirect:/";
+        return "redirect:view";
     }
 
-    public String delete(@PathVariable Long id, Model model){
+    //listo
+    @GetMapping("/delete/{id}")
+    public String delete(@PathVariable Integer id, Model model){
         productoServiceAPI.delete(id);
-        return "redirect:/";
+        return "redirect:../view";
     }
 }

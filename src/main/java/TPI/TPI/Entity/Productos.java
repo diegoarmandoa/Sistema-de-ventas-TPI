@@ -33,5 +33,4 @@ public class Productos {
     private Boolean estado;
 
 
-
 }

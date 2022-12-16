@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{/fragments/layout}">
+<th:block layout:fragment="page-head">
+  <title>Productos</title>
+  <link th:href="@{/vendor/datatables/dataTables.bootstrap4.min.css}" rel="stylesheet">
+</th:block>
+<body>
+  <div layout:fragment="page-content">
+    <div class="text-center">
+      <h1 class="h3 mb-2 text-gray-800">Productos</h1>
+    </div>
+    <div class="card-header">
+      <h4>
+        <div class="card-header py-3">
+          <i class="fa fa-list-alt">
+            Agregar Productos
+          </i>
+        </div>
+      </h4>
+      <form id="frNewProducto" action="#" th:action="@{saveProductos}" th:object="${producto}" method="post" autocomplete="off" novalidate="novalidate">
+        <div class="modal-body">
+          <div class="row">
+            <div class="col-12 mb-3">
+              <div class="input-group">
+                <div class="input-group-prepend">
+                  <div class="input-group-text">
+                    <i class="fa-sharp fa-solid fa-link"></i>
+                  </div>
+                </div>
+                <input id="url_imagen" class="form-control" type="text" name="url_imagen" placeholder="Ingrese el URL de la imagen">
+              </div>
+            </div>
+            <div class="col-12 mb-3">
+              <div class="input-group">
+                <div class="input-group-prepend">
+                  <div class="input-group-text">
+                    <i class="fas fa-box"></i>
+                  </div>
+                </div>
+                <input id="nombre" class="form-control" type="text" name="nombre" placeholder="Ingrese el Nombre">
+              </div>
+            </div>
+            <div class="col-12 col-sm-6 mb-3">
+              <div class="input-group">
+                <div class="input-group-prepend">
+                  <div class="input-group-text">
+                    <i class="far fa-money-bill-alt"></i>
+                  </div>
+                </div>
+                <input id="precio" class="form-control" type="text" name="precio" placeholder="Ingrese el Precio">
+              </div>
+            </div>
+            <div class="col-12 col-sm-6 mb-3">
+              <div class="input-group">
+                <div class="input-group-prepend">
+                  <div class="input-group-text">
+                    <i class="fa fa-plus-square" aria-hidden="true"></i>
+                  </div>
+                </div>
+                <input id="cantidad" class="form-control" type="text" name="cantidad" placeholder="Ingrese las Unidades">
+              </div>
+            </div>
+            <div class="col-12 mb-3">
+              <div class="input-group">
+                <div class="input-group-prepend">
+                  <div class="input-group-text">
+                    <i class="fas fa-list-alt fa-fw"></i>
+                  </div>
+                </div>
+                <input id="descripcion" class="form-control" type="text" name="descripcion" placeholder="Ingrese la descripción">
+              </div>
+            </div>
+            <div class="col-12 mb-3">
+              <div class="input-group">
+                <div class="input-group-prepend">
+                  <div class="input-group-text">
+                    <i class="fas fa-info-circle"></i>
+                  </div>
+                </div>
+                <table class="table table-sm">
+                  <tbody>
+                  <tr>
+                    <td>
+                      <span class="required">
+                        Estado
+                      </span>
+                    </td>
+                    <td>
+                      <div class="form-check">
+                        <input id="activo" class="form-check-input" type="radio" name="estado" value="true" checked="checked">
+                        <label class="form-check-label" for="activo">Activo</label>
+                      </div>
+                    </td>
+                    <td>
+                      <div class="form-check">
+                        <input id="inactivo" class="form-check-input" type="radio" name="estado" value="false" checked="checked">
+                        <label class="form-check-label" for="inactivo">Inactivo</label>
+                      </div>
+                    </td>
+                  </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <a class="btn btn-secondary btn-sm" th:href="@{/dashboard/productos/view}" title="Cerrar">
+            <i class="fa fa-times"></i>
+            Cerrar
+          </a>
+          <button id="btnAgregarProducto" class="btn btn-primary btn-sm" type="submit">
+            <i class="fa fa-save"></i>
+            Guardar
+          </button>
+        </div>
+      </form>
+
+    </div>
+  </div>
+</body>
+<th:block layout:fragment="page-scripts">
+  <!-- Page level plugins -->
+  <script th:src="@{/vendor/datatables/jquery.dataTables.min.js}"></script>
+  <script th:src="@{/vendor/datatables/dataTables.bootstrap4.min.js}"></script>
+
+  <!-- Page level custom scripts -->
+  <script th:src="@{/js/demo/datatables-demo.js}"></script>
+</th:block>
+</html>
