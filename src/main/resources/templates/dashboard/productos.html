@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{/fragments/layout}" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      xsi:schemaLocation="http://www.thymeleaf.org
+http://www.thymeleaf.org ">
+<th:block layout:fragment="page-head">
+    <title>Productos</title>
+
+    <link th:href="@{/vendor/datatables/dataTables.bootstrap4.min.css}" rel="stylesheet">
+</th:block>
+<body>
+<div layout:fragment="page-content">
+    <!-- Page Heading -->
+    <div class="text-center">
+        <h1 class="h3 mb-2 text-gray-800">Productos</h1>
+    </div>
+
+    <!-- DataTales Example -->
+    <div class="card-header">
+        <h4>
+            <div class="card-header py-3">
+                <i class="fa fa-list-alt">
+                    Listado de Productos
+                </i>
+                <samp class="float-right">
+                    <a class="btn btn-success btn-sm" th:href="@{/dashboard/productos/new}"
+                       title="Agregar nuevo producto">
+                        <i class="fa fa-plus" aria-hidden="true"></i>
+                        Nuevo Producto
+                    </a>
+                </samp>
+            </div>
+        </h4>
+        <div class="card-body">
+            <div th:if="${productosList.size() > 0}">
+                <div class="table-responsive">
+                    <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                        <thead>
+                        <tr>
+                            <th>Imagen</th>
+                            <th>Nombre</th>
+                            <th>Descripción</th>
+                            <th>Precio</th>
+                            <th>Unidades</th>
+                            <th>Estado</th>
+                            <th>Acciones</th>
+                        </tr>
+                        </thead>
+                        <tfoot>
+                        <tr>
+                            <th>Imagen</th>
+                            <th>Nombre</th>
+                            <th>Descripción</th>
+                            <th>Precio</th>
+                            <th>Unidades</th>
+                            <th>Estado</th>
+                            <th>Acciones</th>
+                        </tr>
+                        </tfoot>
+                        <tbody>
+                        <tr th:each="producto: ${productosList}">
+                            <td><img th:src="${producto.getUrl_imagen()}" class="card-img-top" alt="Imagen no contiene"
+                                     height="90" width="30">
+                            </td>
+                            <td class="text-center" th:text="${producto.nombre}"/>
+                            <td class="text-center" th:text="${producto.descripcion}"/>
+                            <td class="text-center" th:text="${producto.precio}"/>
+                            <td class="text-center" th:text="${producto.cantidad}"/>
+                            <td class="text-center" th:if="${producto.estado == true}">
+                                <span class="badge badge-success text-capitalize">Activo</span>
+                            </td>
+                            <td class="text-center" th:if="${producto.estado == false}">
+                                <span class="badge badge-danger text-capitalize">De Baja</span>
+                            </td>
+                            <td class="text-center">
+                                <a class="btn btn-primary btn-sm text-btn-editar"
+                                   th:href="@{saveProductos/{id}(id=${producto.id_Productos})}" title="Editar">
+                                    <i class="fa fa-edit fa-fw" aria-hidden="true"></i>
+                                </a>
+                                <a class="btn btn-danger btn-sm text-btn-eliminar"
+                                   th:href="@{delete/{id}(id=${producto.id_Productos})}" title="Eliminar">
+                                    <i class="fa fa-trash fa-fw" aria-hidden="true"></i>
+                                </a>
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div th:if="${productosList.size() <= 0}">
+                    <p>Aun no has agregado Productos</p>
+                </div>
+            </div>
+        </div>
+
+    </div>
+    <!-- /.container-fluid -->
+
+</div>
+<!-- End of Main Content -->
+
+</div>
+</body>
+
+<th:block layout:fragment="page-scripts">
+    <!-- Page level plugins -->
+    <script th:src="@{/vendor/datatables/jquery.dataTables.min.js}"></script>
+    <script th:src="@{/vendor/datatables/dataTables.bootstrap4.min.js}"></script>
+
+    <!-- Page level custom scripts -->
+    <script th:src="@{/js/demo/datatables-demo.js}"></script>
+
+</th:block>
+</html>
+
