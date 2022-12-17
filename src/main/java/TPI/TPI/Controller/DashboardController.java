@@ -6,7 +6,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 @Controller
 
-public class DashboardIndexController {
+public class DashboardController {
 
     @RequestMapping("/dashboard/home")
     public String inicio(){
