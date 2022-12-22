@@ -9,4 +9,6 @@ public interface UsuarioServiceAPI extends GenericServiceAPI<Usuarios,Long> , Us
     //Esta interface aloja los metodos de la interface GenericServiceAPI y se le pasa la clase
     //de la entidad en este caso usuario,
     Usuarios save(UserDTO userDTO);
+
+
 }

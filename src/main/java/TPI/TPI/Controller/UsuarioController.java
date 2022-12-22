@@ -2,14 +2,12 @@ package TPI.TPI.Controller;
 
 import TPI.TPI.DTO.UserDTO;
 import TPI.TPI.Enumeraciones.Rol;
+import TPI.TPI.service.api.PersonaServiceAPI;
 import TPI.TPI.service.api.UsuarioServiceAPI;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 
 @Controller
 @RequestMapping("/dashboard/usuarios")
@@ -17,6 +15,8 @@ public class UsuarioController {
 
     @Autowired
     UsuarioServiceAPI usuarioServiceAPI;
+    @Autowired
+    PersonaServiceAPI personaServiceAPI;
 
     @GetMapping("/view")
     public String viewUsers( Model model){
@@ -45,6 +45,10 @@ public class UsuarioController {
        usuarioServiceAPI.save(registrationDto);
 
         return "redirect:/registration?success";
+    }
+
+    public String userActiveOrDesactive(){
+        return "";
     }
 
     @GetMapping("/login")

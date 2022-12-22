@@ -39,14 +39,9 @@ public class UsuarioServiceImpl extends GenericServiceImpl<Usuarios,Long>  imple
     @Override
     public Usuarios save(UserDTO userDTO) {
 
-        Administradores administradores;
         Optional<Administradores> obj = Optional.ofNullable(administradorDaoAPI.findByRol(userDTO.getRol()));
-        if (!obj.isPresent()) {
-            administradores = new Administradores();
-            administradores.setRol(userDTO.getRol());
-        }else{
-            administradores = obj.get();
-        }
+        Administradores administradores = obj.isPresent()?obj.get():new Administradores(userDTO.getRol());
+
 
         Personas personas = new Personas();
         personas.setNombre(userDTO.getNombre());
@@ -61,6 +56,7 @@ public class UsuarioServiceImpl extends GenericServiceImpl<Usuarios,Long>  imple
 
         return usuarioDaoAPI.save(usuarios);
     }
+
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
