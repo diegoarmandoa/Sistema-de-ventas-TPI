@@ -4,6 +4,7 @@ import TPI.TPI.Enumeraciones.Rol;
 import lombok.Data;
 
 import javax.persistence.*;
+import java.util.Collection;
 
 @Entity
 @Table(name = "administradores")
@@ -18,10 +19,9 @@ public class Administradores {
     @Enumerated(EnumType.STRING)
     private Rol rol ;
 
-    @Column(name = "estado")
-    private Boolean estado;
 
-    @ManyToOne
-    @JoinColumn(name = "id_persona")
-    private Personas persona;
+    @OneToMany (mappedBy = "administrador", cascade = CascadeType.ALL)
+    private Collection<Usuarios> usuarios;
+
+
 }

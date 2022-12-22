@@ -67,7 +67,7 @@ public class ecommerce {
         per.setEstado(true);
         personaRepositorio.save(per);
         Personas per1 = personaRepositorio.findAll(Sort.by("id").descending()).get(0);
-        usuario.setId_persona(per1);
+        usuario.setPersona(per1);
         usuarioRepositorio.save(usuario);
         cliente.setId_persona(per1);
         cliente.setEstado(true);
@@ -86,11 +86,11 @@ public class ecommerce {
 
         }
         List<Pedidos> pedidos;
-        pedidos = pedidosRepositorio.pedidosEnProceso(usuario.getId_persona().getId());
+        pedidos = pedidosRepositorio.pedidosEnProceso(usuario.getPersona().getId());
         carritoDao.clear();
-        Double total = pedidosRepositorio.pedidosEnProcesoTotal(usuario.getId_persona().getId());
+        Double total = pedidosRepositorio.pedidosEnProcesoTotal(usuario.getPersona().getId());
         model.addAttribute("total", total);
-        pedidos = pedidosRepositorio.pedidosEnProceso(usuario.getId_persona().getId());
+        pedidos = pedidosRepositorio.pedidosEnProceso(usuario.getPersona().getId());
         model.addAttribute("pedidos", pedidos);//enviando la lista
 
         return "pedidos";
@@ -121,9 +121,9 @@ public class ecommerce {
 
 
             usuarios = usuarioRepositorio.buscarUsuario(usuario.getUsuario());
-             total = pedidosRepositorio.pedidosEnProcesoTotal(usuarios.getId_persona().getId());
+             total = pedidosRepositorio.pedidosEnProcesoTotal(usuarios.getPersona().getId());
 
-            pedidos = pedidosRepositorio.pedidosEnProceso(usuarios.getId_persona().getId());
+            pedidos = pedidosRepositorio.pedidosEnProceso(usuarios.getPersona().getId());
         } catch (Exception e) {
             pedidos = pedidosRepositorio.pedidosEnProceso(0);
             model.addAttribute("total", total);
@@ -164,7 +164,7 @@ public class ecommerce {
 
         try {
             usuarios = usuarioRepositorio.buscarUsuario(usuario.getUsuario());
-            pedidos = pedidosRepositorio.pedidosEnProceso(usuarios.getId_persona().getId());
+            pedidos = pedidosRepositorio.pedidosEnProceso(usuarios.getPersona().getId());
             if (usuarios.getPassword().equals(usuario.getPassword())) {
                 Date fecha = new Date();
                 for (CarritoDao x : carritoDao) {
@@ -174,7 +174,7 @@ public class ecommerce {
 
                     Clientes clientes;
 
-                    clientes = clienteRepositorio.buscarCliente(usuarios.getId_persona().getId());
+                    clientes = clienteRepositorio.buscarCliente(usuarios.getPersona().getId());
                     pedido.setEstado("Encargado");
                     pedido.setId_producto(productos);
                     pedido.setId_persona(clientes);
@@ -184,10 +184,10 @@ public class ecommerce {
 
                 }
                 carritoDao.clear();
-                Double total = pedidosRepositorio.pedidosEnProcesoTotal(usuarios.getId_persona().getId());
+                Double total = pedidosRepositorio.pedidosEnProcesoTotal(usuarios.getPersona().getId());
                 model.addAttribute("total", total);
 
-                pedidos = pedidosRepositorio.pedidosEnProceso(usuarios.getId_persona().getId());
+                pedidos = pedidosRepositorio.pedidosEnProceso(usuarios.getPersona().getId());
                 model.addAttribute("pedidos", pedidos);//enviando la lista
 
                 return "pedidos";

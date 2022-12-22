@@ -4,6 +4,7 @@ import lombok.Data;
 import net.bytebuddy.utility.dispatcher.JavaDispatcher;
 
 import javax.persistence.*;
+import java.util.Collection;
 
 @Entity
 @Table(name = "personas")
@@ -22,5 +23,7 @@ public class Personas {
     @Column(name = "estado")
     private Boolean estado;
 
+    @OneToMany(mappedBy = "persona", cascade = CascadeType.ALL)
+    Collection<Usuarios> usuarios;
 
 }

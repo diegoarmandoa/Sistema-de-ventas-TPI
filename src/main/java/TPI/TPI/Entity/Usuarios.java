@@ -20,7 +20,12 @@ public class Usuarios {
     @Column(name = "password")
     private String password;
 
-    @ManyToOne
-    @JoinColumn(name = "id_persona")
-    private Personas id_persona;
+    @ManyToOne(cascade = CascadeType.PERSIST)
+    @JoinColumn(name = "id_persona", nullable = false)
+    private Personas persona;
+
+    @ManyToOne(cascade = CascadeType.PERSIST)
+    @JoinColumn(name = "id_administrador", nullable = false)
+    private Administradores administrador;
+
 }
