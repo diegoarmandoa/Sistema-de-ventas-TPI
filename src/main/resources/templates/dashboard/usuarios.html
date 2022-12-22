@@ -22,6 +22,7 @@
                         <th>Usuario</th>
                         <th>Nombre</th>
                         <th>Apellido</th>
+                        <th>Tipo</th>
                         <th>Acciones</th>
                     </tr>
                     </thead>
@@ -30,14 +31,22 @@
                         <th>Usuario</th>
                         <th>Nombre</th>
                         <th>Apellido</th>
+                        <th>Tipo</th>
                         <th>Acciones</th>
                     </tr>
                     </tfoot>
                     <tbody>
                     <tr th:each="usuario: ${listUsuarios}">
                         <td th:text="${usuario.usuario}"/>
-                        <td th:text="${usuario. id_persona.nombre}"/>
-                        <td th:text="${usuario. id_persona.apellido}"/>
+                        <td th:text="${usuario.persona.nombre}"/>
+                        <td th:text="${usuario.persona.apellido}"/>
+                        <th:block th:if="${usuario.administrador != null}" >
+                            <td  th:text="${usuario.administrador.rol}"/>
+                        </th:block>
+                        <th:block th:if="${usuario.administrador == null}" >
+                            <td/>
+                        </th:block>
+
                         <td> <button class="btn btn-warning btn-lg"> Dar de baja </button> </td>
                     </tr>
                     </tbody>

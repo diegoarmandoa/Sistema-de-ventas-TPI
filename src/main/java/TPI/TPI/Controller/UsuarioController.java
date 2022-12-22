@@ -1,10 +1,14 @@
 package TPI.TPI.Controller;
 
+import TPI.TPI.DTO.UserDTO;
+import TPI.TPI.Enumeraciones.Rol;
 import TPI.TPI.service.api.UsuarioServiceAPI;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 @Controller
@@ -20,19 +24,32 @@ public class UsuarioController {
         return "dashboard/usuarios.html";
     }
 
-    @GetMapping("/agregar")
-    public String addUser(){
-        return "";
+    @ModelAttribute("user")
+    public UserDTO userRegistrationDto() {
+        return new UserDTO();
     }
 
-    @GetMapping("/editar")
-    public String updateUser(){
-        return "";
+
+
+    @GetMapping
+    public String showRegistrationForm(Model model) {
+
+        model.addAttribute("rolUsuario", Rol.USER);
+        model.addAttribute("rolAdmin", Rol.ADMIN);
+        return "registration";
+    }
+
+    @PostMapping
+    public String registerUserAccount(@ModelAttribute("user") UserDTO registrationDto) {
+
+       usuarioServiceAPI.save(registrationDto);
+
+        return "redirect:/registration?success";
     }
 
     @GetMapping("/login")
-    public String login (){
-        return "dashboard/login.html";
+    public String login() {
+        return "login";
     }
 
 }
