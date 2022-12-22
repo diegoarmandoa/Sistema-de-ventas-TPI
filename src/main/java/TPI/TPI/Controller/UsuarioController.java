@@ -34,8 +34,8 @@ public class UsuarioController {
     @GetMapping
     public String showRegistrationForm(Model model) {
 
-        model.addAttribute("rolUsuario", Rol.USER);
-        model.addAttribute("rolAdmin", Rol.ADMIN);
+        model.addAttribute("rolUsuario", Rol.ROLE_USER);
+        model.addAttribute("rolAdmin", Rol.ROLE_ADMIN);
         return "registration";
     }
 

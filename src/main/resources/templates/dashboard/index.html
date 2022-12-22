@@ -1,10 +1,10 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
-      layout:decorate="~{/fragments/layout}">
+      layout:decorate="~{/fragments/layout}" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 
-    <th:block layout:fragment="page-head">
-        <title>inicio</title>
-    </th:block>
+<th:block layout:fragment="page-head">
+    <title>inicio</title>
+</th:block>
 
 
 <body>
@@ -310,8 +310,15 @@
                         a
                         constantly updated collection of beautiful svg images that you can use
                         completely free and without attribution!</p>
-                    <a target="_blank" rel="nofollow" href="https://undraw.co/">Browse Illustrations on
-                        unDraw &rarr;</a>
+
+                    <a target="_blank" rel="nofollow" sec:authentication="principal.authorities"> </a>
+                    <div sec:authorize="hasRole('ADMIN')">
+                        <a target="_blank" rel="nofollow" href="https://undraw.co/">Browse Illustrations on
+                            unDraw &rarr;</a>
+                    </div>
+                    <a target="_blank" rel="nofollow" sec:authorize="hasRole('USER')">user </a>
+
+
                 </div>
             </div>
 
