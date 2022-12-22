@@ -5,6 +5,7 @@ import TPI.TPI.DTO.UserDTO;
 import TPI.TPI.Entity.Administradores;
 import TPI.TPI.Entity.Personas;
 import TPI.TPI.Entity.Usuarios;
+import TPI.TPI.dao.api.AdministradorDaoAPI;
 import TPI.TPI.dao.api.UsuarioDaoAPI;
 import TPI.TPI.service.api.UsuarioServiceAPI;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,6 +19,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -26,6 +28,9 @@ public class UsuarioServiceImpl extends GenericServiceImpl<Usuarios,Long>  imple
     private UsuarioDaoAPI usuarioDaoAPI;
     @Autowired
     private BCryptPasswordEncoder passwordEncoder;
+
+    @Autowired
+    AdministradorDaoAPI administradorDaoAPI;
     @Override
     public CrudRepository<Usuarios, Long> getDao() {
         return usuarioDaoAPI;
@@ -34,13 +39,19 @@ public class UsuarioServiceImpl extends GenericServiceImpl<Usuarios,Long>  imple
     @Override
     public Usuarios save(UserDTO userDTO) {
 
+        Administradores administradores;
+        Optional<Administradores> obj = Optional.ofNullable(administradorDaoAPI.findByRol(userDTO.getRol()));
+        if (!obj.isPresent()) {
+            administradores = new Administradores();
+            administradores.setRol(userDTO.getRol());
+        }else{
+            administradores = obj.get();
+        }
+
         Personas personas = new Personas();
         personas.setNombre(userDTO.getNombre());
         personas.setApellido(userDTO.getApellido());
         personas.setEstado(true);
-
-        Administradores administradores = new Administradores();
-        administradores.setRol(userDTO.getRol());
 
         Usuarios usuarios = new Usuarios();
         usuarios.setPersona(personas);
