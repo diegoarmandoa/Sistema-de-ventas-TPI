@@ -44,21 +44,22 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
 		http.authorizeRequests().antMatchers(
-						"/dashboard/usuarios**",
+						"/ecommerce/**",
 						"/js/**",
 						"/css/**",
 						"/img/**").permitAll()
+				.antMatchers("/dashboard/**").hasAnyRole("USER","ADMIN")
 				.anyRequest().authenticated()
 				.and()
 				.formLogin()
-				.loginPage("/dashboard/usuarios/login")
+				.loginPage("/login")
 				.permitAll()
 				.and()
 				.logout()
 				.invalidateHttpSession(true)
 				.clearAuthentication(true)
 				.logoutRequestMatcher(new AntPathRequestMatcher("/logout"))
-				.logoutSuccessUrl("/dashboard/usuarios/login?logout")
+				.logoutSuccessUrl("/login?logout")
 				.permitAll();
 	}
 

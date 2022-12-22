@@ -41,7 +41,7 @@
                                 <div class="text-center">
                                     <h1 class="h4 text-gray-900 mb-4">Bienvenido!</h1>
                                 </div>
-                                <form class="user" th:action="@{/dashboard/usuarios/login}" method="post">
+                                <form class="user" th:action="@{/login}" method="post">
                                     <!-- error message -->
                                     <div th:if="${param.error}">
                                         <div class="alert alert-danger">Invalid username or
