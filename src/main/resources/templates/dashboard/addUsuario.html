@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{/fragments/layout}">
+
+<th:block layout:fragment="page-head">
+
+</th:block>
+
+<body>
+
+<div layout:fragment="page-content">
+
+
+    <!-- Page Heading -->
+    <h1 class="h3 mb-2 text-gray-800">Agregar Usuario</h1>
+    <!-- DataTales Example -->
+    <div class="card shadow mb-4">
+        <div class="card-header py-3">
+            <h6 class="m-0 font-weight-bold text-primary">Complete correctamente todos los campos.</h6>
+
+        </div>
+        <div class="card-body">
+            <div th:if="${param.success}">
+                <div class="alert alert-info">You've successfully registered
+                    to our awesome app!
+                </div>
+            </div>
+            <form id="frNewProducto" action="#" th:action="@{/dashboard/usuarios}" th:object="${user}" method="post">
+                <div class="modal-body">
+                    <div class="row">
+
+                        <div class="col-12 col-sm-6 mb-3">
+                            <div class="input-group">
+                                <div class="input-group-prepend">
+                                    <div class="input-group-text">
+                                        <i class="fa-solid fa-user-pen" aria-hidden="true"></i>
+                                    </div>
+                                </div>
+                                <input th:field="${user.nombre}" class="form-control" type="text"
+                                       placeholder="Ingrese su nombre">
+                            </div>
+                        </div>
+                        <div class="col-12 col-sm-6 mb-3">
+                            <div class="input-group">
+                                <div class="input-group-prepend">
+                                    <div class="input-group-text">
+                                        <i class="fa-solid fa-user-pen" aria-hidden="true"></i>
+
+                                    </div>
+                                </div>
+                                <input
+                                        id="lastName" class="form-control" th:field="${user.apellido}"
+                                        required autofocus="autofocus" placeholder="Ingrese su apellido"/>
+                            </div>
+                        </div>
+
+
+                        <div class="col-12 col-sm-6 mb-3">
+                            <div class="input-group">
+                                <div class="input-group-prepend">
+                                    <div class="input-group-text">
+                                        <i class="fa-solid fa-user" aria-hidden="true"></i>
+
+                                    </div>
+                                </div>
+                                <input
+                                        id="user" class="form-control" th:field="${user.usuario}" required
+                                        autofocus="autofocus"/>
+                            </div>
+                        </div>
+
+
+                        <div class="col-12 col-sm-6 mb-3">
+                            <div class="input-group">
+                                <div class="input-group-prepend">
+                                    <div class="input-group-text">
+                                        <i class="fa-solid fa-key" aria-hidden="true"></i>
+
+                                    </div>
+                                </div>
+                                <input
+                                        id="password" class="form-control" type="password"
+                                        th:field="${user.password}" required autofocus="autofocus"/>
+                            </div>
+                        </div>
+
+
+                        <div class="col-12 mb-3">
+                            <div class="input-group">
+                                <div class="input-group-prepend">
+                                    <div class="input-group-text">
+                                        <i class="fas fa-list-alt fa-fw"></i>
+                                    </div>
+                                </div>
+                                <select class="form-select" aria-label="Seleccione el tipo de usuario" th:field="${user.rol}">
+                                    <option th:value="${rolUsuario}"> usuario</option>
+                                    <option th:value="${rolAdmin}"> administrador</option>
+                                </select>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <a class="btn btn-secondary btn-sm" th:href="@{/dashboard/usuarios/view}" title="Cerrar">
+                        <i class="fa fa-times"></i>
+                        Cerrar
+                    </a>
+                    <button id="btnAgregarProducto" class="btn btn-primary btn-sm" type="submit">
+                        <i class="fa fa-save"></i>
+                        Guardar
+                    </button>
+                </div>
+            </form>
+
+
+        </div>
+    </div>
+
+</div>
+
+</body>
+
+<th:block layout:fragment="page-scripts">
+
+</th:block>
+</html>

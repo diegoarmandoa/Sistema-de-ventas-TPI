@@ -28,14 +28,16 @@ public class UsuarioController {
     public UserDTO userRegistrationDto() {
         return new UserDTO();
     }
+    @ModelAttribute("rolAdmin")
+    public  Rol rolAdmin(){return Rol.ROLE_ADMIN;}
 
+
+    @ModelAttribute("rolUsuario")
+    public  Rol rolUsuario(){return Rol.ROLE_USER;}
 
 
     @GetMapping
     public String showRegistrationForm(Model model) {
-
-        model.addAttribute("rolUsuario", Rol.ROLE_USER);
-        model.addAttribute("rolAdmin", Rol.ROLE_ADMIN);
         return "registration";
     }
 
@@ -56,4 +58,8 @@ public class UsuarioController {
         return "dashboard/login.html";
     }
 
+    @GetMapping("/registrar")
+    public String registrar(){
+        return "dashboard/addUsuario";
+    }
 }

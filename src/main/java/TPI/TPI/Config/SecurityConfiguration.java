@@ -51,7 +51,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 				.antMatchers("/dashboard/**").hasAnyRole("USER","ADMIN")
 				.anyRequest().authenticated()
 				.and()
-				.formLogin()
+				.formLogin().defaultSuccessUrl("/dashboard/home",true)
 				.loginPage("/login")
 				.permitAll()
 				.and()
