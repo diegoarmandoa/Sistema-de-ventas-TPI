@@ -4,6 +4,7 @@ import TPI.TPI.DTO.UserDTO;
 import TPI.TPI.Enumeraciones.Rol;
 import TPI.TPI.service.api.PersonaServiceAPI;
 import TPI.TPI.service.api.UsuarioServiceAPI;
+import groovy.transform.WithReadLock;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -49,8 +50,10 @@ public class UsuarioController {
         return "redirect:/registration?success";
     }
 
-    public String userActiveOrDesactive(){
-        return "";
+    @GetMapping("/estado")
+    public String PersonaActiveOrDesactive( @RequestParam Integer id,@RequestParam  Boolean estado){
+        personaServiceAPI.usuarioSetEstado(estado,id);
+        return "redirect:/dashboard/usuarios/view";
     }
 
     @GetMapping("/login")
@@ -60,6 +63,9 @@ public class UsuarioController {
 
     @GetMapping("/registrar")
     public String registrar(){
+
         return "dashboard/addUsuario";
     }
+
+
 }

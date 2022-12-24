@@ -46,14 +46,23 @@
                         <td th:text="${usuario.usuario}"/>
                         <td th:text="${usuario.persona.nombre}"/>
                         <td th:text="${usuario.persona.apellido}"/>
-                        <th:block th:if="${usuario.administrador != null}" >
-                            <td  th:text="${usuario.administrador.rol}"/>
+                        <th:block th:if="${usuario.administrador != null}">
+                            <td th:text="${usuario.administrador.rol}"/>
                         </th:block>
-                        <th:block th:if="${usuario.administrador == null}" >
+                        <th:block th:if="${usuario.administrador == null}">
                             <td/>
                         </th:block>
 
-                        <td> <button class="btn btn-warning btn-lg"> Dar de baja </button> </td>
+                        <td>
+                            <button class="btn btn-dark btn-lg"> Cambiar contraseña</button>
+
+                            <a  th:href="@{/dashboard/usuarios/estado(id=${usuario.persona.id},estado=${false})}"
+                                    class="btn btn-danger btn-lg" th:if="${usuario.persona.estado == true}"> Desactivar
+                            </a>
+                            <a th:href="@{/dashboard/usuarios/estado(id=${usuario.persona.id},estado=${true})}"
+                                    class="btn btn-success btn-lg" th:if="${usuario.persona.estado == false}">Activar
+                            </a>
+                        </td>
                     </tr>
                     </tbody>
                 </table>
@@ -70,7 +79,6 @@
     <!-- Page level plugins -->
     <script th:src="@{/vendor/datatables/jquery.dataTables.min.js}"></script>
     <script th:src="@{/vendor/datatables/dataTables.bootstrap4.min.js}"></script>
-    <!-- Page level custom scripts -->
-    <script th:src="@{/js/demo/datatables-demo.js}"></script>
+
 </th:block>
 </html>

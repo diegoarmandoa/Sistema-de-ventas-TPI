@@ -60,11 +60,12 @@ public class UsuarioServiceImpl extends GenericServiceImpl<Usuarios,Long>  imple
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-
-        Usuarios user = usuarioDaoAPI.findByUsuario(username);
-        if (user == null) {
+        Optional <Usuarios> obj = Optional.ofNullable(usuarioDaoAPI.findByUsuario(username));
+        if (!obj.isPresent() || !obj.get().getPersona().getEstado()) {
             throw new UsernameNotFoundException("Invalid username or password.");
         }
+        Usuarios user = obj.get();
+
         return new org.springframework.security.core.userdetails.User(user.getUsuario(), user.getPassword(), mapRolesToAuthorities(user.getAdministrador()));
 
     }

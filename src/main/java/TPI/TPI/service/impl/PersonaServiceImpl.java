@@ -8,6 +8,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
+
 @Service
 public class PersonaServiceImpl extends GenericServiceImpl<Personas,Integer>  implements PersonaServiceAPI {
     @Autowired
@@ -19,7 +21,7 @@ public class PersonaServiceImpl extends GenericServiceImpl<Personas,Integer>  im
         return personaDaoAPI;
     }
 
-
+    @Transactional
     @Override
     public void usuarioSetEstado(Boolean estado, Integer id) {
         personaDaoAPI.updateEstado(id,estado);
