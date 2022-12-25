@@ -1,5 +1,6 @@
 package TPI.TPI.Controller;
 
+import TPI.TPI.DTO.UpdatePasswordDTO;
 import TPI.TPI.DTO.UserDTO;
 import TPI.TPI.Enumeraciones.Rol;
 import TPI.TPI.service.api.PersonaServiceAPI;
@@ -20,8 +21,9 @@ public class UsuarioController {
     PersonaServiceAPI personaServiceAPI;
 
     @GetMapping("/view")
-    public String viewUsers( Model model){
-        model.addAttribute("listUsuarios",usuarioServiceAPI.getAll());
+    public String viewUsers(Model model) {
+        model.addAttribute("listUsuarios", usuarioServiceAPI.getAll());
+        model.addAttribute("updatePassword", new UpdatePasswordDTO());
         return "dashboard/usuarios.html";
     }
 
@@ -29,12 +31,17 @@ public class UsuarioController {
     public UserDTO userRegistrationDto() {
         return new UserDTO();
     }
+
     @ModelAttribute("rolAdmin")
-    public  Rol rolAdmin(){return Rol.ROLE_ADMIN;}
+    public Rol rolAdmin() {
+        return Rol.ROLE_ADMIN;
+    }
 
 
     @ModelAttribute("rolUsuario")
-    public  Rol rolUsuario(){return Rol.ROLE_USER;}
+    public Rol rolUsuario() {
+        return Rol.ROLE_USER;
+    }
 
 
     @GetMapping
@@ -45,14 +52,14 @@ public class UsuarioController {
     @PostMapping
     public String registerUserAccount(@ModelAttribute("user") UserDTO registrationDto) {
 
-       usuarioServiceAPI.save(registrationDto);
+        usuarioServiceAPI.save(registrationDto);
 
         return "redirect:/registration?success";
     }
 
     @GetMapping("/estado")
-    public String PersonaActiveOrDesactive( @RequestParam Integer id,@RequestParam  Boolean estado){
-        personaServiceAPI.usuarioSetEstado(estado,id);
+    public String PersonaActiveOrDesactive(@RequestParam Integer id, @RequestParam Boolean estado) {
+        personaServiceAPI.usuarioSetEstado(estado, id);
         return "redirect:/dashboard/usuarios/view";
     }
 
@@ -62,9 +69,21 @@ public class UsuarioController {
     }
 
     @GetMapping("/registrar")
-    public String registrar(){
+    public String registrar() {
 
         return "dashboard/addUsuario";
+    }
+
+    @GetMapping("/updatePassword")
+    public String UpdatePasword(Model model) {
+        model.addAttribute("updatePassword", new UpdatePasswordDTO());
+        return "";
+    }
+
+    @PostMapping("/updatePassword")
+    public String UpdatePasword(@ModelAttribute UpdatePasswordDTO updatePasswordDTO) {
+        usuarioServiceAPI.setPassword(updatePasswordDTO);
+        return "redirect:/dashboard/usuarios/view";
     }
 
 
