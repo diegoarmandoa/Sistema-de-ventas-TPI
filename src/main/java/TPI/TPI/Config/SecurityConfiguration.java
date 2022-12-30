@@ -5,6 +5,7 @@ import TPI.TPI.service.api.UsuarioServiceAPI;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -18,7 +19,7 @@ import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 @Configuration
 @EnableWebSecurity
 public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
-
+	@Lazy
 	@Autowired
 	private UsuarioServiceAPI userServiceAPI;
 
@@ -43,21 +44,22 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
 		http.authorizeRequests().antMatchers(
-						"/dashboard/usuarios**",
+						"/ecommerce/**","/",
 						"/js/**",
 						"/css/**",
 						"/img/**").permitAll()
+				.antMatchers("/dashboard/**").hasAnyRole("USER","ADMIN")
 				.anyRequest().authenticated()
 				.and()
-				.formLogin()
-				.loginPage("/dashboard/usuarios/login")
+				.formLogin().defaultSuccessUrl("/dashboard/home",true)
+				.loginPage("/login")
 				.permitAll()
 				.and()
 				.logout()
 				.invalidateHttpSession(true)
 				.clearAuthentication(true)
 				.logoutRequestMatcher(new AntPathRequestMatcher("/logout"))
-				.logoutSuccessUrl("/dashboard/usuarios/login?logout")
+				.logoutSuccessUrl("/login?logout")
 				.permitAll();
 	}
 

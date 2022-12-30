@@ -23,5 +23,11 @@ public class Administradores {
     @OneToMany (mappedBy = "administrador", cascade = CascadeType.ALL)
     private Collection<Usuarios> usuarios;
 
+    public Administradores(Rol rol) {
+        this.rol = rol;
+    }
 
+    public Administradores() {
+
+    }
 }

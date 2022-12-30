@@ -1,6 +1,7 @@
 package TPI.TPI.service.impl;
 
 import TPI.TPI.Commons.GenericServiceImpl;
+import TPI.TPI.DTO.UpdatePasswordDTO;
 import TPI.TPI.DTO.UserDTO;
 import TPI.TPI.Entity.Administradores;
 import TPI.TPI.Entity.Personas;
@@ -17,6 +18,7 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Optional;
@@ -39,14 +41,9 @@ public class UsuarioServiceImpl extends GenericServiceImpl<Usuarios,Long>  imple
     @Override
     public Usuarios save(UserDTO userDTO) {
 
-        Administradores administradores;
         Optional<Administradores> obj = Optional.ofNullable(administradorDaoAPI.findByRol(userDTO.getRol()));
-        if (!obj.isPresent()) {
-            administradores = new Administradores();
-            administradores.setRol(userDTO.getRol());
-        }else{
-            administradores = obj.get();
-        }
+        Administradores administradores = obj.isPresent()?obj.get():new Administradores(userDTO.getRol());
+
 
         Personas personas = new Personas();
         personas.setNombre(userDTO.getNombre());
@@ -61,14 +58,21 @@ public class UsuarioServiceImpl extends GenericServiceImpl<Usuarios,Long>  imple
 
         return usuarioDaoAPI.save(usuarios);
     }
+    @Transactional
+    @Override
+    public void setPassword(UpdatePasswordDTO updatePasswordDTO) {
+        usuarioDaoAPI.updatePassword(passwordEncoder.encode(updatePasswordDTO.getPassword()),updatePasswordDTO.getId());
+    }
+
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-
-        Usuarios user = usuarioDaoAPI.findByUsuario(username);
-        if (user == null) {
+        Optional <Usuarios> obj = Optional.ofNullable(usuarioDaoAPI.findByUsuario(username));
+        if (!obj.isPresent() || !obj.get().getPersona().getEstado()) {
             throw new UsernameNotFoundException("Invalid username or password.");
         }
+        Usuarios user = obj.get();
+
         return new org.springframework.security.core.userdetails.User(user.getUsuario(), user.getPassword(), mapRolesToAuthorities(user.getAdministrador()));
 
     }
