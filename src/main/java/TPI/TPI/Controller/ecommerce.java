@@ -1,6 +1,7 @@
 package TPI.TPI.Controller;
 
 import TPI.TPI.Entity.*;
+import TPI.TPI.Enumeraciones.EstadoPedidos;
 import TPI.TPI.Repository.*;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -77,7 +78,7 @@ public class ecommerce {
             Pedidos pedido = new Pedidos();
             Productos productos;
             productos = repositorio.buscar(x.getIdproducto());
-            pedido.setEstado("Encargado");
+            pedido.setEstadoPedidos(EstadoPedidos.PREPARACION);
             pedido.setId_producto(productos);
             pedido.setId_persona(cliente);
             pedido.setCantidad(x.getCantidad());
@@ -86,11 +87,11 @@ public class ecommerce {
 
         }
         List<Pedidos> pedidos;
-        pedidos = pedidosRepositorio.pedidosEnProceso(usuario.getPersona().getId());
+        pedidos = pedidosRepositorio.pedidosEnProceso(usuario.getPersona().getId(),EstadoPedidos.LISTO,EstadoPedidos.PREPARACION);
         carritoDao.clear();
-        Double total = pedidosRepositorio.pedidosEnProcesoTotal(usuario.getPersona().getId());
+        Double total = pedidosRepositorio.pedidosEnProcesoTotal(usuario.getPersona().getId(),EstadoPedidos.LISTO,EstadoPedidos.PREPARACION);
         model.addAttribute("total", total);
-        pedidos = pedidosRepositorio.pedidosEnProceso(usuario.getPersona().getId());
+        pedidos = pedidosRepositorio.pedidosEnProceso(usuario.getPersona().getId(),EstadoPedidos.LISTO,EstadoPedidos.PREPARACION);
         model.addAttribute("pedidos", pedidos);//enviando la lista
 
         return "pedidos";
@@ -121,11 +122,11 @@ public class ecommerce {
 
 
             usuarios = usuarioRepositorio.buscarUsuario(usuario.getUsuario());
-             total = pedidosRepositorio.pedidosEnProcesoTotal(usuarios.getPersona().getId());
+             total = pedidosRepositorio.pedidosEnProcesoTotal(usuarios.getPersona().getId(),EstadoPedidos.LISTO,EstadoPedidos.PREPARACION);
 
-            pedidos = pedidosRepositorio.pedidosEnProceso(usuarios.getPersona().getId());
+            pedidos = pedidosRepositorio.pedidosEnProceso(usuarios.getPersona().getId(),EstadoPedidos.LISTO,EstadoPedidos.PREPARACION);
         } catch (Exception e) {
-            pedidos = pedidosRepositorio.pedidosEnProceso(0);
+            pedidos = pedidosRepositorio.pedidosEnProceso(0,EstadoPedidos.LISTO,EstadoPedidos.PREPARACION);
             model.addAttribute("total", total);
 
             model.addAttribute("pedidos", pedidos);//enviando la lista
@@ -164,7 +165,7 @@ public class ecommerce {
 
         try {
             usuarios = usuarioRepositorio.buscarUsuario(usuario.getUsuario());
-            pedidos = pedidosRepositorio.pedidosEnProceso(usuarios.getPersona().getId());
+            pedidos = pedidosRepositorio.pedidosEnProceso(usuarios.getPersona().getId(),EstadoPedidos.LISTO,EstadoPedidos.PREPARACION);
             if (usuarios.getPassword().equals(usuario.getPassword())) {
                 Date fecha = new Date();
                 for (CarritoDao x : carritoDao) {
@@ -175,7 +176,7 @@ public class ecommerce {
                     Clientes clientes;
 
                     clientes = clienteRepositorio.buscarCliente(usuarios.getPersona().getId());
-                    pedido.setEstado("Encargado");
+                    pedido.setEstadoPedidos(EstadoPedidos.PREPARACION);
                     pedido.setId_producto(productos);
                     pedido.setId_persona(clientes);
                     pedido.setCantidad(x.getCantidad());
@@ -184,10 +185,10 @@ public class ecommerce {
 
                 }
                 carritoDao.clear();
-                Double total = pedidosRepositorio.pedidosEnProcesoTotal(usuarios.getPersona().getId());
+                Double total = pedidosRepositorio.pedidosEnProcesoTotal(usuarios.getPersona().getId(),EstadoPedidos.LISTO,EstadoPedidos.PREPARACION);
                 model.addAttribute("total", total);
 
-                pedidos = pedidosRepositorio.pedidosEnProceso(usuarios.getPersona().getId());
+                pedidos = pedidosRepositorio.pedidosEnProceso(usuarios.getPersona().getId(),EstadoPedidos.LISTO,EstadoPedidos.PREPARACION);
                 model.addAttribute("pedidos", pedidos);//enviando la lista
 
                 return "pedidos";

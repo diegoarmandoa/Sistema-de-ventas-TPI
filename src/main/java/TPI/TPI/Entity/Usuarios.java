@@ -25,7 +25,7 @@ public class Usuarios {
     private Personas persona;
 
     @ManyToOne(cascade = CascadeType.PERSIST)
-    @JoinColumn(name = "id_administrador", nullable = false)
+    @JoinColumn(name = "id_administrador")
     private Administradores administrador;
 
 }

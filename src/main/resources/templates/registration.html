@@ -43,7 +43,7 @@
 
             <h1>Registration</h1>
 
-            <form th:action="@{/dashboard/usuarios}" method="post" th:object="${user}">
+            <form th:action="@{/pedidos}" method="post" th:object="${user}">
                 <div class="form-group">
                     <label class="control-label" for="firstName"> nombre </label>
                     <input id="firstName" class="form-control" th:field="${user.nombre}"
