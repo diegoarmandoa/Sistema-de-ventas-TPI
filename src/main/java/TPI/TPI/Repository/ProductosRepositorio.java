@@ -12,5 +12,8 @@ public List<Productos> findAll();
     @Query("select p from Productos p where p.id_Productos = ?1")
     public Productos buscar(Integer id);
 
-
+    //@Query("SELECT COUNT(id_productos) as producto\n" +
+    //        "FROM productos\n" +
+    //        "WHERE estado = true")
+   // public List<Productos> productosActivos();
 }
