@@ -12,14 +12,4 @@ public class DashboardController {
     public String inicio(){
         return "dashboard/index.html";
     }
-    @RequestMapping ("/dashboard/login")
-    public String login(){
-        return "hola";
-       
-    }
-
-    @GetMapping("/dashboard")
-    public String hola(){
-        return "";
-    }
 }

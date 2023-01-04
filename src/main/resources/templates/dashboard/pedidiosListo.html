@@ -16,7 +16,7 @@
     <!-- DataTales Example -->
     <div class="card shadow mb-4">
         <div class="card-header py-3">
-            <h6 class="m-0 font-weight-bold text-primary">Pedidos a preparar</h6>
+            <h6 class="m-0 font-weight-bold text-primary">Pedidos a entregar</h6>
 
         </div>
         <div class="card-body">
@@ -46,12 +46,10 @@
                         <td ><b th:text="${pedido.id_producto.nombre}"></b></td>
                         <td ><b th:text="${pedido.cantidad}"></b></td>
                         <td>
-                            <th:block th:if="${pedido.estadoPedidos.toString().equals('PREPARACION')}">
-                                <span class="badge badge-secondary" th:text="${pedido.estadoPedidos}"></span>
-                            </th:block>
+                                <span class="badge badge-success" th:text="${pedido.estadoPedidos}"></span>
                         </td>
-                        <td><a class="btn btn-primary btn-sm " th:href="@{/dashboard/pedidos/estado(id=${pedido.id_Pedido})}">
-                            Listo
+                        <td><a class="btn btn-primary btn-sm " th:href="@{/dashboard/pedidos/estado/entrega(id=${pedido.id_Pedido})}">
+                            Entrega
                         </a></td>
                     </tr>
                     </tbody>

@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
 import java.util.ArrayList;
 import java.util.Collection;
 
@@ -23,5 +24,11 @@ public class PedidosServiceImpl  extends GenericServiceImpl<Pedidos,Integer>  im
 
     public ArrayList<Pedidos> getAllQuery(EstadoPedidos x) {
         return (ArrayList<Pedidos>) pedidosDaoAPI.getAllByEstadoPedidosEquals(x);
+    }
+
+    @Override
+    @Transactional
+    public void setEstadoPedido(EstadoPedidos estado, Integer id) {
+       pedidosDaoAPI.updateEstado(estado,id);
     }
 }

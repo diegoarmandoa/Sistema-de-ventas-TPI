@@ -9,4 +9,6 @@ import java.util.ArrayList;
 public interface PedidosServiceApi extends GenericServiceAPI<Pedidos,Integer> {
     ArrayList<Pedidos> getAllQuery(EstadoPedidos x);
 
+    void setEstadoPedido(EstadoPedidos estado, Integer id);
+
 }
