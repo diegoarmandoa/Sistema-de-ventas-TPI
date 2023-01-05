@@ -4,7 +4,7 @@
 
 <th:block layout:fragment="page-head">
     <!--contenido head-->
-    <title>Pedidos Listos</title>
+    <title>Pedidos Entrega</title>
     <META http-equiv=refresh content=20>
 </th:block>
 
@@ -16,7 +16,7 @@
     <!-- DataTales Example -->
     <div class="card shadow mb-4">
         <div class="card-header py-3">
-            <h6 class="m-0 font-weight-bold text-primary">Pedidos a entregar</h6>
+            <h6 class="m-0 font-weight-bold text-primary">Pedidos enviados</h6>
 
         </div>
         <div class="card-body">
@@ -25,7 +25,6 @@
                     <thead>
                     <tr>
                         <th>#</th>
-                        <th>Cliente</th>
                         <th>Producto</th>
                         <th>Cantidad</th>
                         <th>Estado</th>
@@ -35,7 +34,6 @@
                     <tfoot>
                     <tr>
                         <th>#</th>
-                        <th>Cliente</th>
                         <th>Producto</th>
                         <th>Cantidad</th>
                         <th>Estado</th>
@@ -45,7 +43,6 @@
                     <tbody>
                     <tr th:each="pedido, iterador : ${listaPedidos}">
                         <td th:text="${iterador.index + 1}"></td>
-                        <td><b th:text="${pedido.getId_persona().getId_persona().nombre +' ' +pedido.getId_persona().getId_persona().apellido }"></b></td>
                         <td ><b th:text="${pedido.id_producto.nombre}"></b></td>
                         <td ><b th:text="${pedido.cantidad}"></b></td>
                         <td>
