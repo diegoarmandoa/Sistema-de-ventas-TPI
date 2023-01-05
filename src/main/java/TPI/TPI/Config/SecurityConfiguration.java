@@ -44,8 +44,16 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
 		http.authorizeRequests().antMatchers(
-						"/ecommerce/**","/",
-						"/js/**","/registro",
+						"/ecommerce/**","/","/registro",
+						"/js/**",
+						"/mapa/**",
+						"/agregarCliente/**",
+						"/AgregarPedido/**",
+						"/AgregarMapa/**",
+
+						"//{id}/carrito/**",
+						"/pedido/**",
+						"/agregados/**",
 						"/css/**",
 						"/img/**").permitAll()
 				.antMatchers("/dashboard/**").hasAnyRole("USER","ADMIN")

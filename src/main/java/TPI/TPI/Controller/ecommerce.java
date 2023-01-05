@@ -6,12 +6,14 @@ import TPI.TPI.Repository.*;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
@@ -19,6 +21,8 @@ import java.util.*;
 @Controller
 @RequestMapping
 public class ecommerce {
+    @Autowired
+    private BCryptPasswordEncoder passwordEncoder;
     @Autowired
     ProductosRepositorio repositorio;
 
@@ -39,15 +43,18 @@ public class ecommerce {
     @PostMapping("/agregarCliente")
     public String guardarCliente(@RequestParam Map<String, Object> params, Model model, Usuarios usuario, Clientes cliente, RedirectAttributes redirect) {
         try {
-
-
-            if(!usuarioRepositorio.buscarUsuarioPassword(usuario.getUsuario(), usuario.getPassword()).getId_Usuario().equals("")){
+            if (passwordEncoder.matches(usuario.getPassword(), passwordEncoder.encode(usuario.getPassword()))) {
                 redirect.addFlashAttribute("Error", "Otro cliente contiene este usuario");
-               // model.addAttribute("UsuariosIgual", "Error");
+                // model.addAttribute("UsuariosIgual", "Error");
+                return "redirect:/agregados";
+            } else if (usuarioRepositorio.buscarUsuario(usuario.getUsuario()).getId_Usuario().equals("")) {
+                redirect.addFlashAttribute("Error", "Otro cliente contiene este usuario");
+                // model.addAttribute("UsuariosIgual", "Error");
                 return "redirect:/agregados";
             }
 
-        }catch (Exception e){
+
+        } catch (Exception e) {
 
 
         }
@@ -69,6 +76,7 @@ public class ecommerce {
         personaRepositorio.save(per);
         Personas per1 = personaRepositorio.findAll(Sort.by("id").descending()).get(0);
         usuario.setPersona(per1);
+        usuario.setPassword(passwordEncoder.encode(usuario.getPassword()));
         usuarioRepositorio.save(usuario);
         cliente.setId_persona(per1);
         cliente.setEstado(true);
@@ -87,11 +95,11 @@ public class ecommerce {
 
         }
         List<Pedidos> pedidos;
-        pedidos = pedidosRepositorio.pedidosEnProceso(usuario.getPersona().getId(),EstadoPedidos.LISTO,EstadoPedidos.PREPARACION);
+        pedidos = pedidosRepositorio.pedidosEnProceso(usuario.getPersona().getId(), EstadoPedidos.LISTO, EstadoPedidos.PREPARACION);
         carritoDao.clear();
-        Double total = pedidosRepositorio.pedidosEnProcesoTotal(usuario.getPersona().getId(),EstadoPedidos.LISTO,EstadoPedidos.PREPARACION);
+        Double total = pedidosRepositorio.pedidosEnProcesoTotal(usuario.getPersona().getId(), EstadoPedidos.LISTO, EstadoPedidos.PREPARACION);
         model.addAttribute("total", total);
-        pedidos = pedidosRepositorio.pedidosEnProceso(usuario.getPersona().getId(),EstadoPedidos.LISTO,EstadoPedidos.PREPARACION);
+        pedidos = pedidosRepositorio.pedidosEnProceso(usuario.getPersona().getId(), EstadoPedidos.LISTO, EstadoPedidos.PREPARACION);
         model.addAttribute("pedidos", pedidos);//enviando la lista
 
         return "pedidos";
@@ -115,18 +123,20 @@ public class ecommerce {
 
     @PostMapping("/pedido")
     public String pedido(@RequestParam Map<String, Object> params, Model model, Usuarios usuario, RedirectAttributes redirect) {
-        List<Pedidos> pedidos;
+        List<Pedidos> pedidos = null;
         Usuarios usuarios;
         Double total = 0.00;
         try {
 
+            if (passwordEncoder.matches(usuario.getPassword(), passwordEncoder.encode(usuario.getPassword()))) {
+                usuarios = usuarioRepositorio.buscarUsuario(usuario.getUsuario());
+                total = pedidosRepositorio.pedidosEnProcesoTotal(usuarios.getPersona().getId(), EstadoPedidos.LISTO, EstadoPedidos.PREPARACION);
+                pedidos = pedidosRepositorio.pedidosEnProceso(usuarios.getPersona().getId(), EstadoPedidos.LISTO, EstadoPedidos.PREPARACION);
 
-            usuarios = usuarioRepositorio.buscarUsuario(usuario.getUsuario());
-             total = pedidosRepositorio.pedidosEnProcesoTotal(usuarios.getPersona().getId(),EstadoPedidos.LISTO,EstadoPedidos.PREPARACION);
+            }
 
-            pedidos = pedidosRepositorio.pedidosEnProceso(usuarios.getPersona().getId(),EstadoPedidos.LISTO,EstadoPedidos.PREPARACION);
         } catch (Exception e) {
-            pedidos = pedidosRepositorio.pedidosEnProceso(0,EstadoPedidos.LISTO,EstadoPedidos.PREPARACION);
+            pedidos = pedidosRepositorio.pedidosEnProceso(0, EstadoPedidos.LISTO, EstadoPedidos.PREPARACION);
             model.addAttribute("total", total);
 
             model.addAttribute("pedidos", pedidos);//enviando la lista
@@ -152,6 +162,7 @@ public class ecommerce {
         model.addAttribute("carritos", carro);//enviando la lista
         return "ecommerce";
     }
+
     @GetMapping("/mapa")
     public String mapa() {
 
@@ -165,8 +176,9 @@ public class ecommerce {
 
         try {
             usuarios = usuarioRepositorio.buscarUsuario(usuario.getUsuario());
-            pedidos = pedidosRepositorio.pedidosEnProceso(usuarios.getPersona().getId(),EstadoPedidos.LISTO,EstadoPedidos.PREPARACION);
-            if (usuarios.getPassword().equals(usuario.getPassword())) {
+            pedidos = pedidosRepositorio.pedidosEnProceso(usuarios.getPersona().getId(), EstadoPedidos.LISTO, EstadoPedidos.PREPARACION);
+
+            if (passwordEncoder.matches(usuario.getPassword(), passwordEncoder.encode(usuario.getPassword()))) {
                 Date fecha = new Date();
                 for (CarritoDao x : carritoDao) {
                     Pedidos pedido = new Pedidos();
@@ -185,10 +197,10 @@ public class ecommerce {
 
                 }
                 carritoDao.clear();
-                Double total = pedidosRepositorio.pedidosEnProcesoTotal(usuarios.getPersona().getId(),EstadoPedidos.LISTO,EstadoPedidos.PREPARACION);
+                Double total = pedidosRepositorio.pedidosEnProcesoTotal(usuarios.getPersona().getId(), EstadoPedidos.LISTO, EstadoPedidos.PREPARACION);
                 model.addAttribute("total", total);
 
-                pedidos = pedidosRepositorio.pedidosEnProceso(usuarios.getPersona().getId(),EstadoPedidos.LISTO,EstadoPedidos.PREPARACION);
+                pedidos = pedidosRepositorio.pedidosEnProceso(usuarios.getPersona().getId(), EstadoPedidos.LISTO, EstadoPedidos.PREPARACION);
                 model.addAttribute("pedidos", pedidos);//enviando la lista
 
                 return "pedidos";
