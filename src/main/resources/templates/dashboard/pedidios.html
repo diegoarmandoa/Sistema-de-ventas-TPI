@@ -25,6 +25,7 @@
                     <thead>
                     <tr>
                         <th>#</th>
+                        <th>Cliente</th>
                         <th>Producto</th>
                         <th>Cantidad</th>
                         <th>Estado</th>
@@ -34,6 +35,7 @@
                     <tfoot>
                     <tr>
                         <th>#</th>
+                        <th>Cliente</th>
                         <th>Producto</th>
                         <th>Cantidad</th>
                         <th>Estado</th>
@@ -43,6 +45,7 @@
                     <tbody>
                     <tr th:each="pedido, iterador : ${listaPedidos}">
                         <td th:text="${iterador.index + 1}"></td>
+                        <td><b th:text="${pedido.getId_persona().getId_persona().nombre +' ' +pedido.getId_persona().getId_persona().apellido }"></b></td>
                         <td ><b th:text="${pedido.id_producto.nombre}"></b></td>
                         <td ><b th:text="${pedido.cantidad}"></b></td>
                         <td>
@@ -50,7 +53,7 @@
                                 <span class="badge badge-secondary" th:text="${pedido.estadoPedidos}"></span>
                             </th:block>
                         </td>
-                        <td><a class="btn btn-primary btn-sm " th:href="@{/dashboard/pedidos/estado(id=${pedido.id_Pedido})}">
+                        <td><a class="btn btn-primary btn-sm " th:href="@{/dashboard/pedidos/estado/listo(id=${pedido.id_Pedido})}">
                             Listo
                         </a></td>
                     </tr>
