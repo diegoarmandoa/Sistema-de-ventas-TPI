@@ -46,6 +46,14 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 		http.authorizeRequests().antMatchers(
 						"/ecommerce/**","/",
 						"/js/**",
+						"/mapa/**",
+						"/agregarCliente/**",
+						"/AgregarPedido/**",
+						"/AgregarMapa/**",
+
+						"//{id}/carrito/**",
+						"/pedido/**",
+						"/agregados/**",
 						"/css/**",
 						"/img/**").permitAll()
 				.antMatchers("/dashboard/**").hasAnyRole("USER","ADMIN")
