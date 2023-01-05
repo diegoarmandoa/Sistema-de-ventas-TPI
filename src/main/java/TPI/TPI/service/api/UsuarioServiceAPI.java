@@ -12,5 +12,7 @@ public interface UsuarioServiceAPI extends GenericServiceAPI<Usuarios,Long> , Us
     Usuarios save(UserDTO userDTO);
     void setPassword(UpdatePasswordDTO updatePasswordDTO);
 
+    Boolean existeUsuario();
+
 
 }

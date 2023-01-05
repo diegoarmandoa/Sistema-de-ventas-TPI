@@ -83,4 +83,10 @@ public class UsuarioServiceImpl extends GenericServiceImpl<Usuarios,Long>  imple
 
         return cRoles.stream().map(role -> new SimpleGrantedAuthority(role.getRol().toString())).collect(Collectors.toList());
     }
+
+    public Boolean existeUsuario(){
+        if (usuarioDaoAPI.cantidadUsuarios() > 0) return true;
+        return false;
+
+    }
 }
