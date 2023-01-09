@@ -11,4 +11,6 @@ public interface PedidosServiceApi extends GenericServiceAPI<Pedidos,Integer> {
 
     void setEstadoPedido(EstadoPedidos estado, Integer id);
 
+    void CambiarEstadoPorIdFactura(EstadoPedidos estado, Integer id);
+
 }

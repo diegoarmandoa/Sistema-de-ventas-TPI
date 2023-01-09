@@ -15,4 +15,8 @@ public interface PedidosDaoAPI extends JpaRepository<Pedidos,Integer> {
     @Query("update Pedidos p set p.estadoPedidos =:estadoE where p.id_Pedido =:id")
     void updateEstado(@Param(value ="estadoE") EstadoPedidos estado, @Param(value ="id")Integer id);
 
+    @Modifying(clearAutomatically = true)
+    @Query("update Pedidos p set p.estadoPedidos =:estadoE where p.venta.id =:id")
+    void ActualizarEstadoPorIdFactura(@Param(value ="estadoE") EstadoPedidos estado, @Param(value ="id")Integer id);
+
 }

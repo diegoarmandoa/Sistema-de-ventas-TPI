@@ -91,7 +91,7 @@ public class PedidosController {
 
     @GetMapping("/estado/entrega")
     public String SetpedidoEntrega(@RequestParam Integer id) {
-        pedidosServiceApi.setEstadoPedido(EstadoPedidos.ENTREGA,id);
+        pedidosServiceApi.CambiarEstadoPorIdFactura(EstadoPedidos.ENTREGA,id);
         return "redirect:/dashboard/pedidos/listo";
     }
 

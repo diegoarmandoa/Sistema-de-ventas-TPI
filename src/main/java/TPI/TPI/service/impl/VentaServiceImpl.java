@@ -8,6 +8,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -25,5 +28,13 @@ public class VentaServiceImpl extends GenericServiceImpl<Ventas, Integer> implem
     public Integer obtenerUltimoID() {
         Optional<Integer> id = Optional.ofNullable(ventaDaoAPI.ultimoID());
         return id.isPresent() ? id.get(): 0;
+    }
+
+    @Override
+    public ArrayList<Ventas> obtenerVentasConProductosListos() {
+        Optional<Collection<Ventas>> ventas = Optional.ofNullable(ventaDaoAPI.ventasConEstadoListo());
+
+        ventas.get().forEach(v -> System.out.println(v.toString()));
+       return new ArrayList<>(ventas.get()) ;
     }
 }

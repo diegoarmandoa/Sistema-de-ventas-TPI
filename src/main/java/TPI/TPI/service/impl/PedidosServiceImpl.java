@@ -31,4 +31,10 @@ public class PedidosServiceImpl  extends GenericServiceImpl<Pedidos,Integer>  im
     public void setEstadoPedido(EstadoPedidos estado, Integer id) {
        pedidosDaoAPI.updateEstado(estado,id);
     }
+
+    @Override
+    @Transactional
+    public void CambiarEstadoPorIdFactura(EstadoPedidos estado, Integer id) {
+        pedidosDaoAPI.ActualizarEstadoPorIdFactura(estado,id);
+    }
 }
