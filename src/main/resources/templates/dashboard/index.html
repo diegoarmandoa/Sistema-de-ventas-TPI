@@ -29,7 +29,7 @@
                             <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">
                                 Productos (Activos)
                             </div>
-                            <div class="h5 mb-0 font-weight-bold text-gray-800">$40,000</div>
+                            <div class="h5 mb-0 font-weight-bold text-gray-800" th:text="${countProductos}"></div>
                         </div>
                         <div class="col-auto">
                             <i class="fas fa-shopping-cart fa-2x text-gray-300"></i>
@@ -48,7 +48,7 @@
                             <div class="text-xs font-weight-bold text-success text-uppercase mb-1">
                                 Clientes (Activos)
                             </div>
-                            <div class="h5 mb-0 font-weight-bold text-gray-800">$215,000</div>
+                            <div class="h5 mb-0 font-weight-bold text-gray-800" th:text="${countClientes}"></div>
                         </div>
                         <div class="col-auto">
                             <i class="fas fa-users fa-2x text-gray-300"></i>
@@ -67,7 +67,7 @@
                             <div class="text-xs font-weight-bold text-info text-uppercase mb-1">
                                 Producto mas vendido
                             </div>
-                            <div class="h5 mb-0 font-weight-bold text-gray-800">18</div>
+                            <div class="h5 mb-0 font-weight-bold text-gray-800" th:text="${producto}"></div>
                         </div>
                         <div class="col-auto">
                             <i class="fas fa-qrcode fa-2x text-gray-300"></i>
@@ -86,7 +86,7 @@
                             <div class="text-xs font-weight-bold text-warning text-uppercase mb-1">
                                 Pedidos Pendientes
                             </div>
-                            <div class="h5 mb-0 font-weight-bold text-gray-800">18</div>
+                            <div class="h5 mb-0 font-weight-bold text-gray-800" th:text="${countPedidoPendiente}"></div>
                         </div>
                         <div class="col-auto">
                             <i class="fas fa-hourglass-half fa-2x text-gray-300"></i>
