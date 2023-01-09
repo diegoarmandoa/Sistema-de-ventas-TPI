@@ -14,9 +14,4 @@ public class VentasController {
     @Autowired
     VentaServiceAPI ventaServiceAPI;
 
-    @GetMapping("/pedidoListo")
-    String ObtenerVentasPorPedidosListos(){
-        ventaServiceAPI.obtenerVentasConProductosListos();
-        return "redirect:/login";
-    }
 }

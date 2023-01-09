@@ -14,7 +14,7 @@ public interface PedidosRepositorio extends JpaRepository<Pedidos, Integer> {
     public Double pedidosEnProcesoTotal(Integer id, EstadoPedidos x, EstadoPedidos y);
 
     //Consulta recupera el número de pedidos pendientes
-    @Query("SELECT COUNT(p.estado) as pedido FROM Pedidos p WHERE p.estado = 'PREPARACION'")
+    @Query("SELECT COUNT(p.estadoPedidos) as pedido FROM Pedidos p WHERE p.estadoPedidos = 'PREPARACION'")
     Long countByEstadoPedido();
 
     //intento fallido

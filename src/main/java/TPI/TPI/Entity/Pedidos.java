@@ -21,8 +21,7 @@ public class Pedidos  implements Serializable {
     @Column(name = "cantidad")
     private Integer cantidad;
 
-    @Column(name = "estado")
-    private String estado;
+
     @Enumerated(EnumType.STRING)
     private EstadoPedidos estadoPedidos;
 

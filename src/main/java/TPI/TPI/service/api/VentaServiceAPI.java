@@ -8,5 +8,5 @@ import java.util.List;
 
 public interface VentaServiceAPI extends GenericServiceAPI<Ventas, Integer> {
     Integer obtenerUltimoID();
-    ArrayList<Ventas> obtenerVentasConProductosListos();
+
 }

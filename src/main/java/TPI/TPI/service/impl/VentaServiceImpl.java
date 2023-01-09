@@ -30,11 +30,5 @@ public class VentaServiceImpl extends GenericServiceImpl<Ventas, Integer> implem
         return id.isPresent() ? id.get(): 0;
     }
 
-    @Override
-    public ArrayList<Ventas> obtenerVentasConProductosListos() {
-        Optional<Collection<Ventas>> ventas = Optional.ofNullable(ventaDaoAPI.ventasConEstadoListo());
 
-        ventas.get().forEach(v -> System.out.println(v.toString()));
-       return new ArrayList<>(ventas.get()) ;
-    }
 }
