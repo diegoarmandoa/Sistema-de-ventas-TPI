@@ -21,9 +21,6 @@ public class Pedidos  implements Serializable {
     @Column(name = "cantidad")
     private Integer cantidad;
 
-    @Column(name = "fecha")
-    private String fecha;
-
     @Column(name = "estado")
     private String estado;
     @Enumerated(EnumType.STRING)
@@ -37,4 +34,10 @@ public class Pedidos  implements Serializable {
     @ManyToOne
     @JoinColumn(name = "id_cliente")
     private Clientes id_persona;
+
+
+    @ManyToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "id_venta" , nullable = false)
+    private  Ventas venta ;
+
 }
