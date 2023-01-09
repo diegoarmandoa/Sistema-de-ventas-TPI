@@ -8,6 +8,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Service;
 
+import java.util.Optional;
+
 @Service
 public class VentaServiceImpl extends GenericServiceImpl<Ventas, Integer> implements VentaServiceAPI {
     @Autowired
@@ -17,5 +19,11 @@ public class VentaServiceImpl extends GenericServiceImpl<Ventas, Integer> implem
     @Override
     public CrudRepository<Ventas, Integer> getDao() {
         return ventaDaoAPI;
+    }
+
+    @Override
+    public Integer obtenerUltimoID() {
+        Optional<Integer> id = Optional.ofNullable(ventaDaoAPI.ultimoID());
+        return id.isPresent() ? id.get(): 0;
     }
 }

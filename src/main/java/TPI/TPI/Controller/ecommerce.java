@@ -46,11 +46,11 @@ public class ecommerce {
     @PostMapping("/agregarCliente")
     public String guardarCliente(@RequestParam Map<String, Object> params, Model model, Usuarios usuario, Clientes cliente, RedirectAttributes redirect) {
         try {
-            if (passwordEncoder.matches(usuario.getPassword(), passwordEncoder.encode(usuario.getPassword()))) {
+           /* if (passwordEncoder.matches(usuario.getPassword(), passwordEncoder.encode(usuario.getPassword()))) {
                 redirect.addFlashAttribute("Error", "Otro cliente contiene este usuario");
                 // model.addAttribute("UsuariosIgual", "Error");
                 return "redirect:/agregados";
-            } else if (usuarioRepositorio.buscarUsuario(usuario.getUsuario()).getId_Usuario().equals("")) {
+            } else */if (usuarioRepositorio.buscarUsuario(usuario.getUsuario()).getId_Usuario().equals("")) {
                 redirect.addFlashAttribute("Error", "Otro cliente contiene este usuario");
                 // model.addAttribute("UsuariosIgual", "Error");
                 return "redirect:/agregados";
@@ -89,6 +89,8 @@ public class ecommerce {
         Ventas venta = new Ventas();
         ArrayList<Pedidos>pedidosVenta = new ArrayList<>();
         float sumaTotal = 0;
+        Integer idGenerado = ventaServiceAPI.obtenerUltimoID() + 1;
+        venta.setId(idGenerado);
         for (CarritoDao x : carritoDao) {
             Pedidos pedido = new Pedidos();
             Productos productos;
@@ -96,6 +98,7 @@ public class ecommerce {
             pedido.setEstadoPedidos(EstadoPedidos.PREPARACION);
             pedido.setId_producto(productos);
             pedido.setId_persona(cliente);
+            pedido.setVenta(venta);
             pedido.setCantidad(x.getCantidad());
             pedidosVenta.add(pedido);
 
@@ -199,6 +202,8 @@ public class ecommerce {
                 Ventas venta = new Ventas();
                 ArrayList<Pedidos>pedidosVenta = new ArrayList<>();
                 float SumaTotal = 0;
+                Integer idGenerado = ventaServiceAPI.obtenerUltimoID() + 1;
+                venta.setId(idGenerado);
                 Clientes clientes;
 
                 clientes = clienteRepositorio.buscarCliente(usuarios.getPersona().getId());
@@ -215,7 +220,7 @@ public class ecommerce {
                     pedido.setCantidad(x.getCantidad());
 
                     SumaTotal +=(x.getCantidad() * productos.getPrecio()) ;
-
+                    pedido.setVenta(venta);
                     pedidosVenta.add(pedido);
 
                 }

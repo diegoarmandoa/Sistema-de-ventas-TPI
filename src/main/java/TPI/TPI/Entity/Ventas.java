@@ -13,11 +13,10 @@ import java.util.Date;
 @Data
 public class Ventas {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
     @Column(name = "estado", columnDefinition = "boolean  default false")
-    private Boolean estado;
+    private boolean estado;
 
     @Column(name = "entregado",columnDefinition = "boolean  default false")
     private boolean entregado;

@@ -35,8 +35,8 @@ public class Pedidos  implements Serializable {
     private Clientes id_persona;
 
 
-    @ManyToOne
-    @JoinColumn(name = "id_venta")
+    @ManyToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "id_venta" , nullable = false)
     private  Ventas venta ;
 
 }
