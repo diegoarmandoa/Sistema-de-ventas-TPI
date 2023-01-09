@@ -3,6 +3,7 @@ package TPI.TPI.Controller;
 import TPI.TPI.Entity.*;
 import TPI.TPI.Enumeraciones.EstadoPedidos;
 import TPI.TPI.Repository.*;
+import TPI.TPI.service.api.VentaServiceAPI;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
@@ -21,6 +22,8 @@ import java.util.*;
 @Controller
 @RequestMapping
 public class ecommerce {
+    @Autowired
+    VentaServiceAPI ventaServiceAPI;
     @Autowired
     private BCryptPasswordEncoder passwordEncoder;
     @Autowired
@@ -82,6 +85,10 @@ public class ecommerce {
         cliente.setEstado(true);
         clienteRepositorio.save(cliente);
         Date fecha = new Date();
+
+        Ventas venta = new Ventas();
+        ArrayList<Pedidos>pedidosVenta = new ArrayList<>();
+        float sumaTotal = 0;
         for (CarritoDao x : carritoDao) {
             Pedidos pedido = new Pedidos();
             Productos productos;
@@ -90,10 +97,19 @@ public class ecommerce {
             pedido.setId_producto(productos);
             pedido.setId_persona(cliente);
             pedido.setCantidad(x.getCantidad());
-            pedido.setFecha(obtenerFechaYHoraActual());
-            pedidosRepositorio.save(pedido);
+            pedidosVenta.add(pedido);
 
+
+            sumaTotal += (x.getCantidad() * productos.getPrecio());
         }
+
+        venta.setPedidos(pedidosVenta);
+        venta.setTotal(sumaTotal);
+        venta.setFecha(LocalDateTime.now());
+        venta.setCliente(cliente);
+
+        ventaServiceAPI.save(venta);
+
         List<Pedidos> pedidos;
         pedidos = pedidosRepositorio.pedidosEnProceso(usuario.getPersona().getId(), EstadoPedidos.LISTO, EstadoPedidos.PREPARACION);
         carritoDao.clear();
@@ -180,23 +196,38 @@ public class ecommerce {
 
             if (passwordEncoder.matches(usuario.getPassword(), passwordEncoder.encode(usuario.getPassword()))) {
                 Date fecha = new Date();
+                Ventas venta = new Ventas();
+                ArrayList<Pedidos>pedidosVenta = new ArrayList<>();
+                float SumaTotal = 0;
+                Clientes clientes;
+
+                clientes = clienteRepositorio.buscarCliente(usuarios.getPersona().getId());
+
                 for (CarritoDao x : carritoDao) {
+
+
                     Pedidos pedido = new Pedidos();
                     Productos productos;
                     productos = repositorio.buscar(x.getIdproducto());
-
-                    Clientes clientes;
-
-                    clientes = clienteRepositorio.buscarCliente(usuarios.getPersona().getId());
                     pedido.setEstadoPedidos(EstadoPedidos.PREPARACION);
                     pedido.setId_producto(productos);
                     pedido.setId_persona(clientes);
                     pedido.setCantidad(x.getCantidad());
-                    pedido.setFecha(obtenerFechaYHoraActual());
-                    pedidosRepositorio.save(pedido);
+
+                    SumaTotal +=(x.getCantidad() * productos.getPrecio()) ;
+
+                    pedidosVenta.add(pedido);
 
                 }
+                venta.setPedidos(pedidosVenta);
+                venta.setTotal(SumaTotal);
+                venta.setFecha(LocalDateTime.now());
+                venta.setCliente(clientes);
+
+                ventaServiceAPI.save(venta);
+
                 carritoDao.clear();
+
                 Double total = pedidosRepositorio.pedidosEnProcesoTotal(usuarios.getPersona().getId(), EstadoPedidos.LISTO, EstadoPedidos.PREPARACION);
                 model.addAttribute("total", total);
 

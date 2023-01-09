@@ -50,7 +50,6 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 						"/agregarCliente/**",
 						"/AgregarPedido/**",
 						"/AgregarMapa/**",
-
 						"//{id}/carrito/**",
 						"/pedido/**",
 						"/agregados/**",
