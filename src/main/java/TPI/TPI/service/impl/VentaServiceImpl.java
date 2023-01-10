@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -28,6 +29,12 @@ public class VentaServiceImpl extends GenericServiceImpl<Ventas, Integer> implem
     public Integer obtenerUltimoID() {
         Optional<Integer> id = Optional.ofNullable(ventaDaoAPI.ultimoID());
         return id.isPresent() ? id.get(): 0;
+    }
+
+    @Override
+    @Transactional
+    public void modificarEstadoPorId(Boolean estado, Integer id) {
+        ventaDaoAPI.modificarEstadoPorId(estado,id);
     }
 
 

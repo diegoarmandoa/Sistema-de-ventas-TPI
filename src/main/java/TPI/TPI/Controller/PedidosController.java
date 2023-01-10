@@ -7,6 +7,7 @@ import TPI.TPI.Entity.Pedidos;
 import TPI.TPI.Enumeraciones.EstadoPedidos;
 import TPI.TPI.dao.api.PedidosDaoAPI;
 import TPI.TPI.service.api.PedidosServiceApi;
+import TPI.TPI.service.api.VentaServiceAPI;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -27,6 +28,9 @@ public class PedidosController {
     PedidosDaoAPI pedidosDaoAPI;
     @Autowired
     PedidosServiceApi pedidosServiceApi;
+
+    @Autowired
+    VentaServiceAPI ventaServiceAPI;
 
     private ExecutorService nonBlockingService = Executors
             .newCachedThreadPool();
@@ -83,14 +87,13 @@ public class PedidosController {
     }
     @GetMapping("/listo")
     public String vistaPedidosListo(Model model) {
-
         model.addAttribute("listaPedidos",pedidosServiceApi.getAllQuery(EstadoPedidos.LISTO));
-
         return "dashboard/pedidiosListo";
     }
 
     @GetMapping("/estado/entrega")
     public String SetpedidoEntrega(@RequestParam Integer id) {
+        ventaServiceAPI.modificarEstadoPorId(true,id);
         pedidosServiceApi.CambiarEstadoPorIdFactura(EstadoPedidos.ENTREGA,id);
         return "redirect:/dashboard/pedidos/listo";
     }

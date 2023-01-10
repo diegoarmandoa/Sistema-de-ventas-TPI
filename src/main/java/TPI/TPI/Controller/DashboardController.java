@@ -1,18 +1,15 @@
 package TPI.TPI.Controller;
 
-import TPI.TPI.Entity.Productos;
+
 import TPI.TPI.Repository.ClienteRepositorio;
 import TPI.TPI.Repository.PedidosRepositorio;
 import TPI.TPI.Repository.ProductosRepositorio;
-import TPI.TPI.service.impl.ProductoServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 
-import java.util.List;
 
 @Controller
 
@@ -49,8 +46,8 @@ public class DashboardController {
         model.addAttribute("pedidos", pedidos);
 */
         //Producto mas vendido
-        String producto = productosRepositorio.productoMasVendido();
-        model.addAttribute("producto", producto);
+       // String producto = productosRepositorio.productoMasVendido();
+        //model.addAttribute("producto", producto);
 
         return "dashboard/index.html";
     }
