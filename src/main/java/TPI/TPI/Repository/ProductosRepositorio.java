@@ -18,7 +18,7 @@ public List<Productos> findAll();
     Long countByEstadoProducto();
 
     //Consulta recupera el producto con mas pedidos o mas vendido
-    @Query(value = "SELECT p.nombre FROM productos p INNER JOIN pedidos pe ON p.id_productos = pe.id_producto WHERE pe.estado = 'ENTREGADO' GROUP BY p.nombre ORDER BY SUM(pe.cantidad) DESC, COUNT(*) DESC FETCH FIRST 1 ROW ONLY", nativeQuery = true)
+    @Query(value = "SELECT p.nombre FROM productos p INNER JOIN pedidos pe ON p.id_productos = pe.id_producto WHERE pe.estado_pedidos = 'ENTREGADO' GROUP BY p.nombre ORDER BY SUM(pe.cantidad) DESC, COUNT(*) DESC FETCH FIRST 1 ROW ONLY", nativeQuery = true)
     String productoMasVendido();
 
 }
