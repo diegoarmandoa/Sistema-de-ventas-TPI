@@ -47,7 +47,7 @@
                             <b th:text="${venta.cliente.getId_persona().nombre +' ' + venta.cliente.getId_persona().apellido}"></b>
                         </td>
                         <td><b th:text="${#temporals.format(venta.fecha, 'dd-MM-yyyy HH:mm')}"></b></td>
-                        <td><a href="#" class="btn btn-success">Detalles</a></td>
+                        <td><a th:href="@{/dashboard/ventas/id(id=${venta.getId()})}" class="btn btn-success">Detalles</a></td>
 
                     </tr>
                     </tbody>
