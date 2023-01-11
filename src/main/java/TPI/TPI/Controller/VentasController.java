@@ -8,6 +8,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.ArrayList;
 
@@ -25,5 +26,14 @@ public class VentasController {
         model.addAttribute("ventas",mostrarVentas );
         return "dashboard/ventas";
     }
+
+    @GetMapping("/id")
+    public String getDatabyId(Model model,  @RequestParam  int id){
+        Ventas venta = ventaServiceAPI.get(id);
+        model.addAttribute("venta", venta);
+        return "dashboard/detalleVenta";
+    }
+
+
 
 }
