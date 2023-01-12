@@ -114,7 +114,7 @@ public class ecommerce {
 
         ventaServiceAPI.save(venta);
 
-        model.addAttribute("idCliente", cliente.getId_cliente());
+        model.addAttribute("idCliente", cliente.getId_persona().getId());
         return "mapa";
     }
 
@@ -238,13 +238,8 @@ public class ecommerce {
 
                 carritoDao.clear();
 
-                Double total = pedidosRepositorio.pedidosEnProcesoTotal(usuarios.getPersona().getId(), EstadoPedidos.LISTO, EstadoPedidos.PREPARACION);
-                model.addAttribute("total", total);
-
-                pedidos = pedidosRepositorio.pedidosEnProceso(usuarios.getPersona().getId(), EstadoPedidos.LISTO, EstadoPedidos.PREPARACION);
-                model.addAttribute("pedidos", pedidos);//enviando la lista
-
-                return "pedidos";
+                model.addAttribute("idCliente", clientes.getId_persona().getId());
+                return "mapa";
             } else {
                 redirect.addFlashAttribute("Error", "Datos ingresados incorrectos");
 
