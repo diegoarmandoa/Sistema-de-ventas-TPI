@@ -9,4 +9,5 @@ import java.util.List;
 public interface VentaServiceAPI extends GenericServiceAPI<Ventas, Integer> {
     Integer obtenerUltimoID();
     void modificarEstadoPorId(Boolean estado, Integer ID);
+    void modificarEntregadoPorId(Boolean estado, Integer ID);
 }

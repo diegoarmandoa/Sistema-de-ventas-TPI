@@ -17,6 +17,10 @@ public interface VentaDaoAPI extends JpaRepository<Ventas, Integer> {
     @Query("update Ventas v set v.estado =:estado where  v.id =:id ")
     void modificarEstadoPorId(@Param(value = "estado") boolean estado, @Param(value = "id") Integer id);
 
+    @Modifying(clearAutomatically = true)
+    @Query("update Ventas v set v.entregado =:estado where  v.id =:id ")
+    void modificarEntregadoPorId(@Param(value = "estado") boolean estado, @Param(value = "id") Integer id);
+
     @Query("select v from Ventas v where v.estado = true and v.entregado = false order by v.fecha asc ")
     Collection<Ventas> obtenerVentasActivasNoEntregadas();
 }

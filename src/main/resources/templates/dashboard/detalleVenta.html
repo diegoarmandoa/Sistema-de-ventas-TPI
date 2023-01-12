@@ -38,7 +38,7 @@
                     <h5 th:text="${'Total de la venta: $'+venta.total}"></h5>
                     <h5 th:text="${'Referecias de entrega: '+venta.cliente.getDireccion()}"></h5>
                     <hr>
-                    <div class="text-center"><a href="" class="btn btn-success">Entregado</a></div>
+                    <div class="text-center"><a th:href="@{/dashboard/ventas/update/id(id=${venta.getId()})}" class="btn btn-success">Entregado</a></div>
                 </div>
             </div>
 
@@ -52,8 +52,8 @@
                 <div class="card-header py-3">
                     <h6 class="m-0 font-weight-bold text-primary">Dirección de entrega.</h6>
                 </div>
-                <div class="card-body">
-                    <div id="map" style=" height: 15.9em; ">
+                <div class="card-body" id="map" >
+                    <div style=" height: 191px ">
 
                     </div>
                 </div>
@@ -113,11 +113,18 @@
 <th:block layout:fragment="page-scripts">
     <!--contenido script-->
     <script th:inline="javascript">
-        var map = L.map('map').setView([51.505, -0.09], 13);
+        let lat = [[${venta.cliente.latitud}]];
+        let lng = [[${ venta.cliente.longitud}]];
+        var map = L.map('map').setView([13.63531, -88.742065], 13);
         L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
-            maxZoom: 19,
+
             attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
         }).addTo(map);
+
+        L.marker([lat,lng]).addTo(map)
+            .bindPopup(`Latitud:${lat} <br> longitud:${lng} `)
+            .openPopup();
+
     </script>
 
     <!--contenido script-->

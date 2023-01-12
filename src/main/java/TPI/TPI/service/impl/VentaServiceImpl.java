@@ -37,5 +37,11 @@ public class VentaServiceImpl extends GenericServiceImpl<Ventas, Integer> implem
         ventaDaoAPI.modificarEstadoPorId(estado,id);
     }
 
+    @Override
+    @Transactional
+    public void modificarEntregadoPorId(Boolean estado, Integer ID) {
+        ventaDaoAPI.modificarEntregadoPorId(estado,ID);
+    }
+
 
 }
