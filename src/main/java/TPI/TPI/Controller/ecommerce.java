@@ -41,6 +41,9 @@ public class ecommerce {
 
     @Autowired
     PersonaRepositorio personaRepositorio;
+    @Autowired
+    EventoRepository eventoRepository;
+
 
     List<CarritoDao> carritoDao = new ArrayList();
     DecimalFormat df = new DecimalFormat("#.##");
@@ -184,14 +187,24 @@ public class ecommerce {
 
         return "pedidos";
     }
-
+@GetMapping("/EventoSinIniciar")
+public String evento(){
+  return  "EventoSinIniciar";
+}
     @GetMapping("/ecommerce")
-    public String ecommerce(@RequestParam Map<String, Object> params, Model model, Productos producto) {
+    public String ecommerce(RedirectAttributes redirect,@RequestParam Map<String, Object> params, Model model, Productos producto) {
+        eventoRepository.hourServidor();
+        if(!(eventoRepository.findAll().get(0).getHoraInicio()<= Double.parseDouble(String.valueOf(eventoRepository.hourServidor())) && eventoRepository.findAll().get(0).getHoraCierre()>=Double.parseDouble(String.valueOf(eventoRepository.hourServidor())) )){
+            redirect.addFlashAttribute("inicio",eventoRepository.findAll().get(0).getHoraInicio() );
+            redirect.addFlashAttribute("fin",eventoRepository.findAll().get(0).getHoraCierre());
+            return "redirect:/EventoSinIniciar";
+        }
         List<Productos> producto1 = new ArrayList<>();
 
         try {
             producto1 = repositorio.findAll();
         } catch (Exception e) {
+
             return "ecommerce";
         }
 
