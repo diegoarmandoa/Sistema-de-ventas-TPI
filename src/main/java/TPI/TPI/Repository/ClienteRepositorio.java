@@ -16,6 +16,7 @@ public interface ClienteRepositorio extends JpaRepository<Clientes, Integer> {
     //Consulta recupera el número de clientes activos
     @Query("SELECT COUNT(c.id_cliente) as cliente FROM Clientes c WHERE c.estado = true")
     Long countByEstadoCliente(Boolean estado);
+
     @Transactional
     @Modifying(clearAutomatically = true)
     @Query("update Clientes c set c.latitud = :la, c.longitud = :lo where c.id_cliente = :id")
