@@ -121,7 +121,7 @@ public class ecommerce {
         pedidos = pedidosRepositorio.pedidosEnProceso(usuario.getPersona().getId(), EstadoPedidos.LISTO, EstadoPedidos.PREPARACION);
         carritoDao.clear();
         Double total = pedidosRepositorio.pedidosEnProcesoTotal(usuario.getPersona().getId(), EstadoPedidos.LISTO, EstadoPedidos.PREPARACION);
-        model.addAttribute("total", total);
+        model.addAttribute("total", df.format(total));
         pedidos = pedidosRepositorio.pedidosEnProceso(usuario.getPersona().getId(), EstadoPedidos.LISTO, EstadoPedidos.PREPARACION);
         model.addAttribute("pedidos", pedidos);//enviando la lista
 

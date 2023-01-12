@@ -23,6 +23,8 @@ public class Clientes {
     private double latitud;
     @Column (name ="longitud")
     private double longitud;
+    @Column
+    private String telefono;
 
     @ManyToOne
     @JoinColumn(name = "id_persona")
