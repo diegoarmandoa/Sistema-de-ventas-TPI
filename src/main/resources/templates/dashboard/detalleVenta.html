@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{/fragments/layout}">
+
+<th:block layout:fragment="page-head">
+    <!--contenido head-->
+    <title> Detalle de venta.</title>
+
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.3/dist/leaflet.css"
+          integrity="sha256-kLaT2GOSpHechhsozzB+flnD+zUyjE2LlfWPgU04xyI="
+          crossorigin=""/>
+    <script src="https://unpkg.com/leaflet@1.9.3/dist/leaflet.js"
+            integrity="sha256-WBkoXOwTeyKclOHuWtc+i2uENFpDZ9YPdf5Hf+D7ewM="
+            crossorigin=""></script>
+</th:block>
+
+<body>
+
+<div layout:fragment="page-content">
+
+
+    <!-- Page Heading -->
+    <h1 class="h3 mb-2 text-gray-800"> Detalle de venta</h1>
+
+    <div class="row">
+
+        <!-- Content Column -->
+        <div class="col-lg-6 mb-4">
+
+            <!-- Project Card Example -->
+            <div class="card shadow mb-4">
+                <div class="card-header py-3">
+                    <h6 class="m-0 font-weight-bold text-primary">Detalle de la venta</h6>
+                </div>
+                <div class="card-body">
+                   <h5 th:text="${'Nombre del cliente: '+venta.cliente.getId_persona().nombre +' ' + venta.cliente.getId_persona().apellido}"></h5>
+                    <h5 th:text="${'Fecha del pedido: '+#temporals.format(venta.fecha, 'dd-MM-yyyy HH:mm')}"></h5>
+                    <h5 th:text="${'Total de la venta: $'+venta.total}"></h5>
+                    <h5 th:text="${'Referecias de entrega: '+venta.cliente.getDireccion()}"></h5>
+                    <hr>
+                    <div class="text-center"><a href="" class="btn btn-success">Entregado</a></div>
+                </div>
+            </div>
+
+
+        </div>
+
+        <div class="col-lg-6 mb-4">
+
+            <!-- Project Card Example -->
+            <div class="card shadow mb-4">
+                <div class="card-header py-3">
+                    <h6 class="m-0 font-weight-bold text-primary">Dirección de entrega.</h6>
+                </div>
+                <div class="card-body">
+                    <div id="map" style=" height: 15.9em; ">
+
+                    </div>
+                </div>
+            </div>
+
+
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-lg-12 mb-4">
+
+            <div class="card shadow mb-4">
+                <div class="card-header py-3">
+                    <h6 class="m-0 font-weight-bold text-primary">Productos</h6>
+
+                </div>
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                            <thead>
+                            <tr>
+                                <th>Imagen</th>
+                                <th>Nombre de producto</th>
+                                <th>Cantidad</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr th:each="pedido, iterator: ${venta.getPedidos()}">
+                                <td><img th:src="${pedido.getId_producto().getUrl_imagen()}"
+                                         class="img-thumbnail img-fluid"
+                                         style="max-width: 7em; height: auto; "></td>
+                                <td><b th:text="${pedido.id_producto.nombre}"></b></td>
+                                <td><b th:text="${pedido.cantidad}"></b></td>
+
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+
+        </div>
+    </div>
+
+
+    <!-- DataTales Example -->
+
+
+    <!-- Modal -->
+
+
+</div>
+<!--contenido-->
+</body>
+
+<th:block layout:fragment="page-scripts">
+    <!--contenido script-->
+    <script th:inline="javascript">
+        var map = L.map('map').setView([51.505, -0.09], 13);
+        L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            maxZoom: 19,
+            attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
+        }).addTo(map);
+    </script>
+
+    <!--contenido script-->
+    <script th:src="@{/vendor/datatables/jquery.dataTables.min.js}"></script>
+    <script th:src="@{/vendor/datatables/dataTables.bootstrap4.min.js}"></script>
+    <script th:src="@{/js/demo/datatables-demo.js}"></script>
+
+    <!--contenido script-->
+
+
+</th:block>
+</html>

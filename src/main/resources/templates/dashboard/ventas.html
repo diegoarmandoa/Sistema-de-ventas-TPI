@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{/fragments/layout}">
+
+<th:block layout:fragment="page-head">
+    <title>Ventas por entregar</title>
+</th:block>
+
+<body>
+
+<div layout:fragment="page-content">
+
+
+    <!-- Page Heading -->
+    <h1 class="h3 mb-2 text-gray-800">Ventas</h1>
+    <!-- DataTales Example -->
+    <div class="card shadow mb-4">
+        <div class="card-header py-3">
+            <h6 class="m-0 font-weight-bold text-primary">Por entregar</h6>
+
+        </div>
+        <div class="card-body">
+            <div class="table-responsive">
+                <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                    <thead>
+                    <tr>
+                        <th>#</th>
+                        <th>Nombre del cliente</th>
+                        <th>Fecha del pedido</th>
+                        <th>Acción</th>
+                    </tr>
+                    </thead>
+                    <tfoot>
+                    <tr>
+                        <th>#</th>
+                        <th>Nombre del cliente</th>
+                        <th>Fecha del pedido</th>
+                        <th>Acción</th>
+
+                    </tr>
+                    </tfoot>
+                    <tbody>
+                    <tr th:each="venta, iterator: ${ventas}">
+                        <td><b th:text="${iterator.index + 1}"></b></td>
+
+                        <td>
+                            <b th:text="${venta.cliente.getId_persona().nombre +' ' + venta.cliente.getId_persona().apellido}"></b>
+                        </td>
+                        <td><b th:text="${#temporals.format(venta.fecha, 'dd-MM-yyyy HH:mm')}"></b></td>
+                        <td><a th:href="@{/dashboard/ventas/id(id=${venta.getId()})}" class="btn btn-success">Detalles</a></td>
+
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+
+    <!-- Modal -->
+
+
+</div>
+
+</body>
+
+<th:block layout:fragment="page-scripts">
+    <!--contenido script-->
+    <script th:src="@{/vendor/datatables/jquery.dataTables.min.js}"></script>
+    <script th:src="@{/vendor/datatables/dataTables.bootstrap4.min.js}"></script>
+    <script th:src="@{/js/demo/datatables-demo.js}"></script>
+</th:block>
+</html>

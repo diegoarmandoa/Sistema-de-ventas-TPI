@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{/fragments/layout}">
+<th:block layout:fragment="page-head">
+    <title>Usuarios</title>
+    <link th:href="@{/vendor/datatables/dataTables.bootstrap4.min.css}" rel="stylesheet">
+</th:block>
+<body>
+<div layout:fragment="page-content">
+    <!-- Page Heading -->
+    <h1 class="h3 mb-2 text-gray-800">Usuarios</h1>
+    <!-- DataTales Example -->
+    <div class="card shadow mb-4">
+        <div class="card-header py-3">
+            <h6 class="m-0 font-weight-bold text-primary">Usuarios registrados hasta el monento</h6>
+            <hr>
+            <a class="btn btn-success btn-sm" th:href="@{/dashboard/usuarios/registrar}"
+               title="Agregar nuevo Usuario">
+                <i class="fa fa-plus" aria-hidden="true"></i>
+                Nuevo Usuario
+            </a>
+        </div>
+        <div class="card-body">
+            <div class="table-responsive">
+                <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                    <thead>
+                    <tr>
+                        <th>Usuario</th>
+                        <th>Nombre</th>
+                        <th>Apellido</th>
+                        <th>Tipo</th>
+                        <th>Acciones</th>
+                    </tr>
+                    </thead>
+                    <tfoot>
+                    <tr>
+                        <th>Usuario</th>
+                        <th>Nombre</th>
+                        <th>Apellido</th>
+                        <th>Tipo</th>
+                        <th>Acciones</th>
+                    </tr>
+                    </tfoot>
+                    <tbody>
+                    <tr th:each="usuario: ${listUsuarios}">
+                        <td th:text="${usuario.usuario}"/>
+                        <td th:text="${usuario.persona.nombre}"/>
+                        <td th:text="${usuario.persona.apellido}"/>
+                        <th:block th:if="${usuario.administrador != null}">
+                            <td th:text="${usuario.administrador.rol}"/>
+                        </th:block>
+                        <th:block th:if="${usuario.administrador == null}">
+                            <td/>
+                        </th:block>
+
+                        <td>
+                            <button type="button" class="btn btn-dark btn-lg" data-toggle="modal"
+                                    data-target="#exampleModal" th:attr="data-whatever=${usuario.id_Usuario}">
+                                Cambiar contraseña
+                            </button>
+
+                            <a th:href="@{/dashboard/usuarios/estado(id=${usuario.persona.id},estado=${false})}"
+                               class="btn btn-danger btn-lg" th:if="${usuario.persona.estado == true}"> Desactivar
+                            </a>
+                            <a th:href="@{/dashboard/usuarios/estado(id=${usuario.persona.id},estado=${true})}"
+                               class="btn btn-success btn-lg" th:if="${usuario.persona.estado == false}">Activar
+                            </a>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+
+    <!-- Modal -->
+
+
+</div>
+
+
+<div layout:fragment="page-modal">
+
+
+    <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">New message</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+
+                <div class="modal-body">
+                    <form th:object="${updatePassword}" method="post"
+                          th:action="@{/dashboard/usuarios/updatePassword}" th:id="formPassword">
+                        <input type="hidden" class="form-control" id="recipient-name" th:field="${updatePassword.id}">
+                        <div class="form-group">
+                            <label for="btnPassword" class="col-form-label">Nueva contraseña:</label>
+                            <input type="text" class="form-control"
+                                   th:field="${updatePassword.password}">
+                        </div>
+
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+                    <button type="button" class="btn btn-primary" id="btnPassword">Cambiar</button>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+</body>
+<th:block layout:fragment="page-scripts">
+    <!-- Page level plugins -->
+    <script th:src="@{/js/dashboardJS/personas.js}"></script>
+    <script th:src="@{/vendor/datatables/jquery.dataTables.min.js}"></script>
+    <script th:src="@{/vendor/datatables/dataTables.bootstrap4.min.js}"></script>
+    <script th:src="@{/js/demo/datatables-demo.js}"></script>
+
+</th:block>
+</html>
