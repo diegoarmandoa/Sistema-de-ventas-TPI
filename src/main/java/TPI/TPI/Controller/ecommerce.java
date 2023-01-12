@@ -15,6 +15,7 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import java.text.DecimalFormat;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
@@ -40,19 +41,21 @@ public class ecommerce {
 
     @Autowired
     PersonaRepositorio personaRepositorio;
+    @Autowired
+    EventoRepository eventoRepository;
+
 
     List<CarritoDao> carritoDao = new ArrayList();
-
+    DecimalFormat df = new DecimalFormat("#.##");
     @PostMapping("/agregarCliente")
     public String guardarCliente(@RequestParam Map<String, Object> params, Model model, Usuarios usuario, Clientes cliente, RedirectAttributes redirect) {
         try {
-           /* if (passwordEncoder.matches(usuario.getPassword(), passwordEncoder.encode(usuario.getPassword()))) {
+           /*  */if (usuarioRepositorio.buscarUsuario(usuario.getUsuario()).getId_Usuario().equals("")) {
                 redirect.addFlashAttribute("Error", "Otro cliente contiene este usuario");
                 // model.addAttribute("UsuariosIgual", "Error");
                 return "redirect:/agregados";
-            } else */
-            if (usuarioRepositorio.buscarUsuario(usuario.getUsuario()).getId_Usuario().equals("")) {
-                redirect.addFlashAttribute("Error", "Otro cliente contiene este usuario");
+            }else if ( passwordEncoder.matches(usuario.getPassword(), usuarioRepositorio.buscarUsuario(usuario.getUsuario()).getPassword())) {
+                redirect.addFlashAttribute("Error", "Otro cliente contiene este password");
                 // model.addAttribute("UsuariosIgual", "Error");
                 return "redirect:/agregados";
             }
@@ -88,7 +91,7 @@ public class ecommerce {
         Date fecha = new Date();
 
         Ventas venta = new Ventas();
-        ArrayList<Pedidos> pedidosVenta = new ArrayList<>();
+        ArrayList<Pedidos>pedidosVenta = new ArrayList<>();
         float sumaTotal = 0;
         Integer idGenerado = ventaServiceAPI.obtenerUltimoID() + 1;
         venta.setId(idGenerado);
@@ -129,6 +132,16 @@ public class ecommerce {
 
             producto1.add(repositorio.findAllById(Collections.singleton(x.getIdproducto())).get(0));
         }
+        Double total = 0.0;
+        for (CarritoDao x : carritoDao) {
+
+            Productos productos1;
+            productos1 = repositorio.buscar(x.getIdproducto());
+            total +=(x.getCantidad() * productos1.getPrecio()) ;
+
+        }
+
+        model.addAttribute("total", df.format(total));
         model.addAttribute("carritos", carro);//enviando la lista
         model.addAttribute("productos", producto1);//enviando la lista
         return "carrito";
@@ -141,11 +154,15 @@ public class ecommerce {
         Double total = 0.00;
         try {
 
-            if (passwordEncoder.matches(usuario.getPassword(), passwordEncoder.encode(usuario.getPassword()))) {
+            if ( passwordEncoder.matches(usuario.getPassword(), usuarioRepositorio.buscarUsuario(usuario.getUsuario()).getPassword())) {
                 usuarios = usuarioRepositorio.buscarUsuario(usuario.getUsuario());
                 total = pedidosRepositorio.pedidosEnProcesoTotal(usuarios.getPersona().getId(), EstadoPedidos.LISTO, EstadoPedidos.PREPARACION);
                 pedidos = pedidosRepositorio.pedidosEnProceso(usuarios.getPersona().getId(), EstadoPedidos.LISTO, EstadoPedidos.PREPARACION);
+                model.addAttribute("total", df.format(total));
 
+                model.addAttribute("pedidos", pedidos);//enviando la lista
+
+                return "pedidos";
             }
 
         } catch (Exception e) {
@@ -155,42 +172,46 @@ public class ecommerce {
             model.addAttribute("pedidos", pedidos);//enviando la lista
             return "pedidos";
         }
-        model.addAttribute("total", total);
+        pedidos = pedidosRepositorio.pedidosEnProceso(0, EstadoPedidos.LISTO, EstadoPedidos.PREPARACION);
+
+        model.addAttribute("total", df.format(total));
 
         model.addAttribute("pedidos", pedidos);//enviando la lista
 
         return "pedidos";
     }
-
+@GetMapping("/EventoSinIniciar")
+public String evento(){
+  return  "EventoSinIniciar";
+}
     @GetMapping("/ecommerce")
-    public String ecommerce(@RequestParam Map<String, Object> params, Model model, Productos producto) {
+    public String ecommerce(RedirectAttributes redirect,@RequestParam Map<String, Object> params, Model model, Productos producto) {
+        eventoRepository.hourServidor();
+        if(!(eventoRepository.findAll().get(0).getHoraInicio()<= Double.parseDouble(String.valueOf(eventoRepository.hourServidor())) && eventoRepository.findAll().get(0).getHoraCierre()>=Double.parseDouble(String.valueOf(eventoRepository.hourServidor())) )){
+            redirect.addFlashAttribute("inicio",eventoRepository.findAll().get(0).getHoraInicio() );
+            redirect.addFlashAttribute("fin",eventoRepository.findAll().get(0).getHoraCierre());
+            return "redirect:/EventoSinIniciar";
+        }
         List<Productos> producto1 = new ArrayList<>();
+
         try {
             producto1 = repositorio.findAll();
         } catch (Exception e) {
+
             return "ecommerce";
         }
+
         List<CarritoDao> carro = carritoDao;
+
         model.addAttribute("productos", producto1);//enviando la lista
         model.addAttribute("carritos", carro);//enviando la lista
         return "ecommerce";
     }
 
     @GetMapping("/mapa")
-    public String mapa(Model model, @RequestParam("id") Integer id,
-                       @RequestParam("Latitud") Double latitud, @RequestParam("Longitud") Double longitud) {
-        clienteRepositorio.updateLatitudYLongitud(latitud, longitud, id);
+    public String mapa() {
 
-        List<Pedidos> pedidos;
-        pedidos = pedidosRepositorio.pedidosEnProceso(id, EstadoPedidos.LISTO, EstadoPedidos.PREPARACION);
-        carritoDao.clear();
-        Double total = pedidosRepositorio.pedidosEnProcesoTotal(id, EstadoPedidos.LISTO, EstadoPedidos.PREPARACION);
-        model.addAttribute("total", total);
-        pedidos = pedidosRepositorio.pedidosEnProceso(id, EstadoPedidos.LISTO, EstadoPedidos.PREPARACION);
-        model.addAttribute("pedidos", pedidos);//enviando la lista
-
-        return "pedidos";
-
+        return "mapa";
     }
 
     @PostMapping("/AgregarPedido")
@@ -202,10 +223,10 @@ public class ecommerce {
             usuarios = usuarioRepositorio.buscarUsuario(usuario.getUsuario());
             pedidos = pedidosRepositorio.pedidosEnProceso(usuarios.getPersona().getId(), EstadoPedidos.LISTO, EstadoPedidos.PREPARACION);
 
-            if (passwordEncoder.matches(usuario.getPassword(), passwordEncoder.encode(usuario.getPassword()))) {
+            if (passwordEncoder.matches(usuario.getPassword(), usuarioRepositorio.buscarUsuario(usuario.getUsuario()).getPassword())) {
                 Date fecha = new Date();
                 Ventas venta = new Ventas();
-                ArrayList<Pedidos> pedidosVenta = new ArrayList<>();
+                ArrayList<Pedidos>pedidosVenta = new ArrayList<>();
                 float SumaTotal = 0;
                 Integer idGenerado = ventaServiceAPI.obtenerUltimoID() + 1;
                 venta.setId(idGenerado);
@@ -224,7 +245,7 @@ public class ecommerce {
                     pedido.setId_persona(clientes);
                     pedido.setCantidad(x.getCantidad());
 
-                    SumaTotal += (x.getCantidad() * productos.getPrecio());
+                    SumaTotal +=(x.getCantidad() * productos.getPrecio()) ;
                     pedido.setVenta(venta);
                     pedidosVenta.add(pedido);
 

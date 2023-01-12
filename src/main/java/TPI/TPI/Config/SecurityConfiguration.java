@@ -53,6 +53,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 						"//{id}/carrito/**",
 						"/pedido/**",
 						"/agregados/**",
+						"/EventoSinIniciar/**",
 						"/css/**",
 						"/img/**").permitAll()
 				.antMatchers("/dashboard/**").hasAnyRole("USER","ADMIN")

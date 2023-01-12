@@ -52,18 +52,20 @@
             <div class="col-md-12 p-3 mt-3">
                 <div align="center"><H1>Mapa</H1></div>
 
-                <button type="submit" class="btn btn-success" th:onclick="sendData([[${idCliente}]])" value="Actualizar">Continuar</button>
-                <hr>
+                <form th:action="@{/AgregarMapa}" method="post" th:object="${cliente}">
+                    <input type="submit" class="btn btn-primary" value="Actualizar"/>
 
-                <div id="map" style=" height: 500px;width: 1100px; "></div>
-                <div class="row">
-                    <!--para mapas -->
-                    <div class="mb-3">
-
+                    <div class="row">
+                        <!--para mapas -->
+                        <div class="mb-3">
+                            <div id="map" style=" height: 500px;width: 1100px; "></div>
+                            <input type="hidden" name="latitud" id="latitud">
+                            <input type="hidden" name="longitud" id="longitud">
+                        </div>
+                        <!--fin mapas-->
                     </div>
-                    <!--fin mapas-->
-                </div>
 
+                </form>
 
             </div>
 
@@ -73,6 +75,7 @@
 </div>
 <th:block layout:fragment="page-scripts">
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
+
 
     <!-- script de mapa-->
     <script src="https://unpkg.com/leaflet@1.9.3/dist/leaflet.js"
@@ -93,8 +96,8 @@
                 .bindPopup("Tu estas a  " + radius + " metros del punto").openPopup();
 
             L.circle(e.latlng, radius).addTo(map);
-           // document.getElementById('latitud').value = map.getBounds().getCenter().lat;
-            //document.getElementById('longitud').value = map.getBounds().getCenter().lng;
+            document.getElementById('latitud').value = map.getBounds().getCenter().lat;
+            document.getElementById('longitud').value = map.getBounds().getCenter().lng;
         }
 
         function onLocationError(e) {
@@ -102,13 +105,6 @@
         }
     </script>
     <!--fin script mapa -->
-
-
-    <script th:inline="javascript" >
-        function sendData(idCliente) {
-            window.location.href = "/mapa?id="+ idCliente+ "&Latitud="+ map.getBounds().getCenter().lat + "&Longitud="+ map.getBounds().getCenter().lng;
-        }
-    </script>
 
 </th:block>
 </body>
