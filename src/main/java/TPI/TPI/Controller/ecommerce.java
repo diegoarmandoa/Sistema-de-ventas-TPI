@@ -105,7 +105,8 @@ public class ecommerce {
             pedido.setVenta(venta);
             pedido.setCantidad(x.getCantidad());
             pedidosVenta.add(pedido);
-
+            productos.setCantidad(productos.getCantidad()-x.getCantidad());
+            repositorio.save(productos);
 
             sumaTotal += (x.getCantidad() * productos.getPrecio());
         }
@@ -255,6 +256,8 @@ public String evento(){
                     SumaTotal +=(x.getCantidad() * productos.getPrecio()) ;
                     pedido.setVenta(venta);
                     pedidosVenta.add(pedido);
+                    productos.setCantidad(productos.getCantidad()-x.getCantidad());
+                    repositorio.save(productos);
 
                 }
                 venta.setPedidos(pedidosVenta);
@@ -302,7 +305,13 @@ public String evento(){
             index++;
             if (x.getIdproducto() == id) {
                 if ((x.getCantidad() + productos.getCantidad()) > 0) {
+
                     x.setCantidad(x.getCantidad() + productos.getCantidad());
+                   Productos producto = repositorio.buscar(x.getIdproducto());
+                    if(producto.getCantidad()  < x.getCantidad()){
+                        redirect.addFlashAttribute("Error", "Lo lamentamos, cantidad del producto en carrito es mayor a existencia("+productos.getCantidad()+")");
+
+                    }
                     return "redirect:/ecommerce";
                 } else {
                     carritoDao.remove(index - 1);
