@@ -12,5 +12,5 @@ import java.sql.Time;
 public interface EventoRepository extends JpaRepository<Eventos,Integer> {
     @Query(value = "SELECT date_part('hour', current_time)",nativeQuery = true)
     public BigDecimal hourServidor();
-
+    
 }

@@ -17,6 +17,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.text.DecimalFormat;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
 
@@ -47,14 +48,16 @@ public class ecommerce {
 
     List<CarritoDao> carritoDao = new ArrayList();
     DecimalFormat df = new DecimalFormat("#.##");
+
     @PostMapping("/agregarCliente")
     public String guardarCliente(@RequestParam Map<String, Object> params, Model model, Usuarios usuario, Clientes cliente, RedirectAttributes redirect) {
         try {
-           /*  */if (usuarioRepositorio.buscarUsuario(usuario.getUsuario()).getId_Usuario().equals("")) {
+            /*  */
+            if (usuarioRepositorio.buscarUsuario(usuario.getUsuario()).getId_Usuario().equals("")) {
                 redirect.addFlashAttribute("Error", "Otro cliente contiene este usuario");
                 // model.addAttribute("UsuariosIgual", "Error");
                 return "redirect:/agregados";
-            }else if ( passwordEncoder.matches(usuario.getPassword(), usuarioRepositorio.buscarUsuario(usuario.getUsuario()).getPassword())) {
+            } else if (passwordEncoder.matches(usuario.getPassword(), usuarioRepositorio.buscarUsuario(usuario.getUsuario()).getPassword())) {
                 redirect.addFlashAttribute("Error", "Otro cliente contiene este password");
                 // model.addAttribute("UsuariosIgual", "Error");
                 return "redirect:/agregados";
@@ -91,7 +94,7 @@ public class ecommerce {
         Date fecha = new Date();
 
         Ventas venta = new Ventas();
-        ArrayList<Pedidos>pedidosVenta = new ArrayList<>();
+        ArrayList<Pedidos> pedidosVenta = new ArrayList<>();
         float sumaTotal = 0;
         Integer idGenerado = ventaServiceAPI.obtenerUltimoID() + 1;
         venta.setId(idGenerado);
@@ -137,7 +140,7 @@ public class ecommerce {
 
             Productos productos1;
             productos1 = repositorio.buscar(x.getIdproducto());
-            total +=(x.getCantidad() * productos1.getPrecio()) ;
+            total += (x.getCantidad() * productos1.getPrecio());
 
         }
 
@@ -154,7 +157,7 @@ public class ecommerce {
         Double total = 0.00;
         try {
 
-            if ( passwordEncoder.matches(usuario.getPassword(), usuarioRepositorio.buscarUsuario(usuario.getUsuario()).getPassword())) {
+            if (passwordEncoder.matches(usuario.getPassword(), usuarioRepositorio.buscarUsuario(usuario.getUsuario()).getPassword())) {
                 usuarios = usuarioRepositorio.buscarUsuario(usuario.getUsuario());
                 total = pedidosRepositorio.pedidosEnProcesoTotal(usuarios.getPersona().getId(), EstadoPedidos.LISTO, EstadoPedidos.PREPARACION);
                 pedidos = pedidosRepositorio.pedidosEnProceso(usuarios.getPersona().getId(), EstadoPedidos.LISTO, EstadoPedidos.PREPARACION);
@@ -180,18 +183,30 @@ public class ecommerce {
 
         return "pedidos";
     }
-@GetMapping("/EventoSinIniciar")
-public String evento(){
-  return  "EventoSinIniciar";
-}
+
+    @GetMapping("/EventoSinIniciar")
+    public String evento() {
+        return "EventoSinIniciar";
+    }
+
     @GetMapping("/ecommerce")
-    public String ecommerce(RedirectAttributes redirect,@RequestParam Map<String, Object> params, Model model, Productos producto) {
-        eventoRepository.hourServidor();
-        if(!(eventoRepository.findAll().get(0).getHoraInicio()<= Double.parseDouble(String.valueOf(eventoRepository.hourServidor())) && eventoRepository.findAll().get(0).getHoraCierre()>=Double.parseDouble(String.valueOf(eventoRepository.hourServidor())) )){
-            redirect.addFlashAttribute("inicio",eventoRepository.findAll().get(0).getHoraInicio() );
-            redirect.addFlashAttribute("fin",eventoRepository.findAll().get(0).getHoraCierre());
-            return "redirect:/EventoSinIniciar";
+    public String ecommerce(RedirectAttributes redirect, @RequestParam Map<String, Object> params, Model model, Productos producto) {
+        Optional<List<Eventos>> obj = Optional.ofNullable(eventoRepository.findAll());
+
+        if (obj.isPresent() && obj.get().size() > 0) {
+            Eventos evento = obj.get().get(0);
+            if (evento.getHoraInicio().isAfter(LocalTime.now()) && evento.getHoraCierre().isBefore(LocalTime.now())) {
+                redirect.addFlashAttribute("inicio", evento.getHoraInicio());
+                redirect.addFlashAttribute("fin", evento.getHoraCierre());
+                return "redirect:/EventoSinIniciar";
+            }
         }
+
+       /* if (!(eventoRepository.findAll().get(0).getHoraInicio() <= Double.parseDouble(String.valueOf(eventoRepository.hourServidor())) && eventoRepository.findAll().get(0).getHoraCierre() >= Double.parseDouble(String.valueOf(eventoRepository.hourServidor())))) {
+            redirect.addFlashAttribute("inicio", eventoRepository.findAll().get(0).getHoraInicio());
+            redirect.addFlashAttribute("fin", eventoRepository.findAll().get(0).getHoraCierre());
+            return "redirect:/EventoSinIniciar";
+        }*/
         List<Productos> producto1 = new ArrayList<>();
 
         try {
@@ -226,7 +241,7 @@ public String evento(){
             if (passwordEncoder.matches(usuario.getPassword(), usuarioRepositorio.buscarUsuario(usuario.getUsuario()).getPassword())) {
                 Date fecha = new Date();
                 Ventas venta = new Ventas();
-                ArrayList<Pedidos>pedidosVenta = new ArrayList<>();
+                ArrayList<Pedidos> pedidosVenta = new ArrayList<>();
                 float SumaTotal = 0;
                 Integer idGenerado = ventaServiceAPI.obtenerUltimoID() + 1;
                 venta.setId(idGenerado);
@@ -245,7 +260,7 @@ public String evento(){
                     pedido.setId_persona(clientes);
                     pedido.setCantidad(x.getCantidad());
 
-                    SumaTotal +=(x.getCantidad() * productos.getPrecio()) ;
+                    SumaTotal += (x.getCantidad() * productos.getPrecio());
                     pedido.setVenta(venta);
                     pedidosVenta.add(pedido);
 
