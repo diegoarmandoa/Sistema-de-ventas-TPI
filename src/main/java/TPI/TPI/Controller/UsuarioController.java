@@ -54,7 +54,7 @@ public class UsuarioController {
 
         usuarioServiceAPI.save(registrationDto);
 
-        return "redirect:/registration?success";
+        return "redirect:/dashboard/usuarios/view";
     }
 
     @GetMapping("/estado")
