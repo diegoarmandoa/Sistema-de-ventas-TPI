@@ -30,7 +30,6 @@ public class MainController {
         return "dashboard/404.html";
     }
 
-
     @GetMapping("/registro")
     public String showRegistrationForm(Model model) {
         model.addAttribute("user",new UserDTO() );
@@ -39,12 +38,9 @@ public class MainController {
         if (!usuarioServiceAPI.existeUsuario()) return "registration";
         return "redirect:/login";
     }
-
     @PostMapping("/registro")
     public String registerUserAccount(@ModelAttribute("user") UserDTO registrationDto) {
-
         usuarioServiceAPI.save(registrationDto);
-
         return "redirect:/login";
     }
 
