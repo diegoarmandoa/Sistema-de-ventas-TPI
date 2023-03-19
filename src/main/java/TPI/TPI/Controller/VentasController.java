@@ -3,7 +3,7 @@ package TPI.TPI.Controller;
 import TPI.TPI.Entity.Ventas;
 import TPI.TPI.dao.api.VentaDaoAPI;
 import TPI.TPI.service.api.VentaServiceAPI;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -11,14 +11,13 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.ArrayList;
+@RequiredArgsConstructor
 
 @Controller
 @RequestMapping("/dashboard/ventas")
 public class VentasController {
-    @Autowired
-    VentaServiceAPI ventaServiceAPI;
-    @Autowired
-    VentaDaoAPI ventaDaoAPI;
+   private final VentaServiceAPI ventaServiceAPI;
+    private final VentaDaoAPI ventaDaoAPI;
 
     @GetMapping
     public String TodasLasVentasActivasNoEntregadas(Model model){
@@ -32,6 +31,12 @@ public class VentasController {
         Ventas venta = ventaServiceAPI.get(id);
         model.addAttribute("venta", venta);
         return "dashboard/detalleVenta";
+    }
+
+    @GetMapping("/entregado")
+    public String setEntregado(@RequestParam int id){
+        ventaDaoAPI.modificarEntregaPorId(true,id);
+        return "redirect:/dashboard/ventas";
     }
 
 

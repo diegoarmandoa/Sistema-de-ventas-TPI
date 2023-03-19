@@ -6,6 +6,7 @@ import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
+import javax.transaction.Transactional;
 import java.util.Collection;
 
 public interface VentaDaoAPI extends JpaRepository<Ventas, Integer> {
@@ -19,4 +20,9 @@ public interface VentaDaoAPI extends JpaRepository<Ventas, Integer> {
 
     @Query("select v from Ventas v where v.estado = true and v.entregado = false order by v.fecha asc ")
     Collection<Ventas> obtenerVentasActivasNoEntregadas();
+
+    @Transactional
+    @Modifying(clearAutomatically = true)
+    @Query("update Ventas v set v.entregado =:estado where  v.id =:id ")
+    void modificarEntregaPorId(@Param(value = "estado") boolean estado, @Param(value = "id") Integer id);
 }

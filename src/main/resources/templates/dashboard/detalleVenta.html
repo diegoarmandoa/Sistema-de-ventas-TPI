@@ -38,7 +38,7 @@
                     <h5 th:text="${'Total de la venta: $'+venta.total}"></h5>
                     <h5 th:text="${'Referecias de entrega: '+venta.cliente.getDireccion()}"></h5>
                     <hr>
-                    <div class="text-center"><a href="" class="btn btn-success">Entregado</a></div>
+                    <div class="text-center"><a th:href="@{/dashboard/ventas/entregado/(id=${venta.getId()})}" class="btn btn-success">Entregado</a></div>
                 </div>
             </div>
 
