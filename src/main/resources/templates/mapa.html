@@ -50,17 +50,18 @@
 
             </div>
             <div class="col-md-12 p-3 mt-3">
-                <div align="center"><H1>Mapa</H1></div>
+                <div align="center"><H1>Mapa</H1> <h1 th:text="${ubicacion.id}" style="display: none" id="idUbicacion"></h1></div>
 
-                <form th:action="@{/AgregarMapa}" method="post" th:object="${cliente}">
+                <form th:action="@{/AgregarMapa}" method="post" th:object="${ubicacion}">
                     <input type="submit" class="btn btn-primary" value="Actualizar"/>
 
                     <div class="row">
                         <!--para mapas -->
                         <div class="mb-3">
                             <div id="map" style=" height: 500px;width: 1100px; "></div>
-                            <input type="hidden" name="latitud" id="latitud">
-                            <input type="hidden" name="longitud" id="longitud">
+                            <input type="hidden" name="id" id="idU">
+                            <input type="hidden" name="lat" id="latitud">
+                            <input type="hidden" name="lng" id="longitud">
                         </div>
                         <!--fin mapas-->
                     </div>
@@ -96,6 +97,7 @@
                 .bindPopup("Tu estas a  " + radius + " metros del punto").openPopup();
 
             L.circle(e.latlng, radius).addTo(map);
+            document.getElementById('idU').value = document.getElementById('idUbicacion').textContent;
             document.getElementById('latitud').value = map.getBounds().getCenter().lat;
             document.getElementById('longitud').value = map.getBounds().getCenter().lng;
         }

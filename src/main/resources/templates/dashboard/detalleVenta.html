@@ -33,7 +33,7 @@
                     <h6 class="m-0 font-weight-bold text-primary">Detalle de la venta</h6>
                 </div>
                 <div class="card-body">
-                   <h5 th:text="${'Nombre del cliente: '+venta.cliente.getId_persona().nombre +' ' + venta.cliente.getId_persona().apellido}"></h5>
+                    <h5 th:text="${'Nombre del cliente: '+venta.cliente.getId_persona().nombre +' ' + venta.cliente.getId_persona().apellido}"></h5>
                     <h5 th:text="${'Fecha del pedido: '+#temporals.format(venta.fecha, 'dd-MM-yyyy HH:mm')}"></h5>
                     <h5 th:text="${'Total de la venta: $'+venta.total}"></h5>
                     <h5 th:text="${'Referecias de entrega: '+venta.cliente.getDireccion()}"></h5>
@@ -113,11 +113,18 @@
 <th:block layout:fragment="page-scripts">
     <!--contenido script-->
     <script th:inline="javascript">
-        var map = L.map('map').setView([51.505, -0.09], 13);
+        let lat = [[${venta.cliente.latitud}]];
+        let lon = [[${venta.cliente.longitud}]];
+        var map = L.map('map').setView([lat, lon], 13);
         L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
             maxZoom: 19,
             attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
         }).addTo(map);
+
+        L.marker([lat, lon]).addTo(map)
+            .bindPopup('Ubicación de entrega.')
+            .openPopup();
+
     </script>
 
     <!--contenido script-->

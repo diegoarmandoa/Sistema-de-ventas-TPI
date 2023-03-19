@@ -1,5 +1,6 @@
 package TPI.TPI.Controller;
 
+import TPI.TPI.DTO.UbicationDTO;
 import TPI.TPI.Entity.*;
 import TPI.TPI.Enumeraciones.EstadoPedidos;
 import TPI.TPI.Repository.*;
@@ -120,8 +121,9 @@ public class ecommerce {
         venta.setCliente(cliente);
 
         ventaServiceAPI.save(venta);
-
-        model.addAttribute("idCliente", cliente.getId_persona().getId());
+        UbicationDTO ubicacion = new UbicationDTO();
+        ubicacion.setId(cliente.getId_cliente());
+        model.addAttribute("ubicacion", ubicacion);
         return "mapa";
     }
 
@@ -224,10 +226,16 @@ public class ecommerce {
         return "ecommerce";
     }
 
-    @GetMapping("/mapa")
-    public String mapa() {
+    @PostMapping ("/AgregarMapa")
+    public String mapa( Model model, UbicationDTO ubicacion) {
+        if(ubicacion.isNull()){
+            model.addAttribute("ubicacion", ubicacion);
+            return "mapa";
+        }
 
-        return "mapa";
+        clienteRepositorio.updateLatitudYLongitud(Double.parseDouble(ubicacion.getLat()), Double.parseDouble(ubicacion.getLng()), ubicacion.getId());
+        model.addAttribute("id", ubicacion.getId());
+        return "redirect:/ecommerce";
     }
 
     @PostMapping("/AgregarPedido")
@@ -277,7 +285,9 @@ public class ecommerce {
 
                 carritoDao.clear();
 
-                model.addAttribute("idCliente", clientes.getId_persona().getId());
+                UbicationDTO ubicacion = new UbicationDTO();
+                ubicacion.setId(clientes.getId_cliente());
+                model.addAttribute("ubicacion", ubicacion);
                 return "mapa";
             } else {
                 redirect.addFlashAttribute("Error", "Datos ingresados incorrectos");
